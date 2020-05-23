@@ -1,0 +1,22 @@
+public static void preOrder(node root){
+        if(root==null)
+            return;
+        System.out.println(root.data);
+        preOrder(root.left);
+        preOrder(root.right);
+    }
+    public static void inOrder(node root){
+        if(root==null)
+            return;
+        preOrder(root.left);
+        System.out.println(root.data);
+        preOrder(root.right);
+    }
+    public static void postOrder(node root){
+        if(root==null)
+            return;
+        postOrder(root.left);
+        postOrder(root.right);
+        System.out.println(root.data);
+        
+    }
