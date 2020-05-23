@@ -1,0 +1,10 @@
+public static int minimum(node root){
+        if(root==null)
+            return (int)1e8;
+        return Math.min(Math.min(minimum(root.left),minimum(root.right)),root.data);
+    }
+    public static int maximum(node root){
+        if(root==null)
+            return (int)-1e8;
+        return Math.max(Math.max(maximum(root.left),maximum(root.right)),root.data);
+    }
