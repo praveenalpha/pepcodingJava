@@ -1,0 +1,43 @@
+public class l001{
+    public static void main(String[] args){
+        solve();
+    }
+    public static class node{
+        int data;
+        node left = null;
+        node right = null;
+        node(int data){
+            this.data=data;
+        }
+    }
+    static int idx=0;
+    public static node constructTree(int[] arr){
+        if(arr.length==idx || arr[idx]==-1)
+        {
+            idx++;
+            return null;
+        }
+        node root = new node(arr[idx++]);
+        root.left=constructTree(arr);
+        root.right=constructTree(arr);
+
+        return root;
+    }
+    public static void display(node root){
+        if(root==null)
+            return;
+        String str="";
+        str += root.left!=null?root.left.data:".";
+        str += "<-" + root.data + "->";
+        str += root.right!=null?root.right.data:".";
+        System.out.println(str);
+        display(root.left);
+        display(root.right);
+        return;
+    }
+    public static void solve(){
+        int[] arr={10,20,40,-1,-1,90,-1,-1,30,60,100,-1,-1,-1,70,110,-1,-1,120,-1,-1};
+        node root = constructTree(arr);
+        display(root);
+    }
+}
