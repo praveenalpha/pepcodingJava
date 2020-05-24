@@ -1,0 +1,28 @@
+public static void leftView(node root){
+        LinkedList<node> Que = new LinkedList<>();
+        Que.addLast(root);
+        while(Que.size()!=0){
+            int size=Que.size();
+            System.out.print(Que.getFirst().data+" ");
+            while(size-->0){
+                node newNode = Que.removeFirst();
+                if(newNode.left!=null)  Que.addLast(newNode.left);
+                if(newNode.right!=null) Que.addLast(newNode.right);
+            }
+        }
+    }
+    public static void rightView(node root){
+        LinkedList<node> Que = new LinkedList<>();
+        Que.addLast(root);
+        while(Que.size()!=0){
+            int size=Que.size();
+            node prev=null;
+            while(size-->0){
+                node newNode = Que.removeFirst();
+                if(newNode.left!=null)  Que.addLast(newNode.left);
+                if(newNode.right!=null) Que.addLast(newNode.right);
+                prev=newNode;
+            }
+            System.out.print(prev.data+" ");
+        }
+    }
