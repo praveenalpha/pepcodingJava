@@ -1,0 +1,17 @@
+public static void levelOrder(node root){
+        LinkedList<node> Que = new LinkedList<>();
+        Que.addLast(root);
+        int count=0;
+        while(Que.size()!=0){
+            System.out.print("Level "+count+"-> ");
+            count++;
+            int size=Que.size();
+            while(size-->0){
+                node newNode = Que.removeFirst();
+                System.out.print(newNode.data+" ");
+                if(newNode.left!=null)  Que.addLast(newNode.left);
+                if(newNode.right!=null) Que.addLast(newNode.right);
+            }
+            System.out.println();
+        }
+    }
