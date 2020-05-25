@@ -1,0 +1,16 @@
+public static boolean nodeToRootPath(node root,int element,ArrayList<node> path){
+        if(root==null)  return false;
+        if(root.data==element){
+            path.add(root);
+            return true;
+        }
+        boolean res = nodeToRootPath(root.left,element,path) || nodeToRootPath(root.right,element,path);
+        if(res) path.add(root);
+        return res;
+    }
+    public static void nodeToRootPathPrint(node root,int element){
+        ArrayList<node> path = new ArrayList<>();
+        nodeToRootPath(root,element,path);
+        for(node n : path)
+            System.out.print(n.data + "-> ");
+    }
