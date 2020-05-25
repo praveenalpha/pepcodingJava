@@ -1,0 +1,23 @@
+    //root to node path return type=================================================================
+    public static ArrayList<node> nodeToRootPathList(node root,int element){
+        if(root==null){
+            ArrayList<node> base = new ArrayList<>();
+            return base;
+        }
+        if(root.data==element){
+            ArrayList<node> path = new ArrayList<>();
+            path.add(root);
+            return path;
+        }
+        ArrayList<node> l = nodeToRootPathList(root.left,element);
+        ArrayList<node> r = nodeToRootPathList(root.right,element);
+        if(l.size() != 0){
+            l.add(root);
+            return l;
+        }
+        if(r.size() != 0){
+            r.add(root);
+            return r;
+        }
+        return new ArrayList<>();
+    }
