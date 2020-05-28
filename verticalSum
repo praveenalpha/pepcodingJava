@@ -1,0 +1,26 @@
+    //VERTICAL SUM=================================================================================
+    public static void verticalSum(node root){
+        width(root,0);
+        int n=maxRight-minLeft+1;
+        ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
+        for(int i=0;i<n;i++)
+            ans.add(new ArrayList<>());
+        LinkedList<pairVO> que = new LinkedList<>();
+        que.addLast(new pairVO(root,-minLeft));//NOTE: always make pair new while dealing with heaps
+        while(que.size() != 0){
+            int size=que.size();
+            while(size-- > 0){
+                pairVO rpair = que.removeFirst();
+                ans.get(rpair.vl).add(rpair.root.data);
+                if(rpair.root.left!=null)   que.addLast(new pairVO(rpair.root.left,rpair.vl-1));//NOTE: always make pair new while dealing with heaps
+                if(rpair.root.right!=null)   que.addLast(new pairVO(rpair.root.right,rpair.vl+1));//NOTE: always make pair new while dealing with heaps        
+            }
+        }
+        for(ArrayList<Integer> ar:ans){
+            int sum=0;
+            for(int j=0;j<ar.size();j++)
+                sum+=ar.get(j);
+            System.out.println(sum);
+        }
+    }
+
