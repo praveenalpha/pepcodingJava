@@ -1,0 +1,19 @@
+public static void topView02(node root){
+        width(root,0);
+        int n = maxRight-minLeft+1;
+        int[] ans = new int[n];
+        for(int i=0;i<n;i++)    ans[i]=-1;
+        LinkedList<pairVO> que = new LinkedList<>();
+        que.addLast(new pairVO(root,-minLeft));
+        while(que.size()!=0){
+            int size=que.size();
+            while(size-- > 0){
+                pairVO rpair = que.removeFirst();
+                if(ans[rpair.vl]==-1)   ans[rpair.vl] = rpair.root.data;
+                if(rpair.root.left != null)    que.addLast(new pairVO(rpair.root.left,rpair.vl-1));
+                if(rpair.root.right!=null)    que.addLast(new pairVO(rpair.root.right,rpair.vl+1));
+            }
+        }
+        for(int i=0;i<n;i++)
+            System.out.print(ans[i]+",");
+    }
