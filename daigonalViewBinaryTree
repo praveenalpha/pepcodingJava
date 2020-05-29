@@ -1,0 +1,34 @@
+//DiagonalView=================================================================================
+    static int leftDiaMin = 0;
+    //static int rightDiaMin = 0;
+    public static void diaWidth(node root,int lev){
+        if(root==null) return;
+        leftDiaMin = Math.min(leftDiaMin,lev);
+        //rightDiaMin = Math.min(rightDiaMin,lev);
+        diaWidth(root.left,lev-1);
+        //diaWidth(root.right,lev);
+    }
+    public static void diaView(node root){
+        diaWidth(root,0);
+        int n = -leftDiaMin + 1;
+        ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
+        for(int i=0;i<n;i++)
+            ans.add(new ArrayList<>());
+        LinkedList<pairVO> que = new LinkedList<>();
+        que.addLast(new pairVO(root,-leftDiaMin));
+        while(que.size() != 0){
+            int size = que.size();
+            while(size-- > 0){
+                pairVO rpair = que.removeFirst();
+                ans.get(rpair.vl).add(rpair.root.data);
+                if(rpair.root.left!=null)   que.addLast(new pairVO(rpair.root.left,rpair.vl-1));
+                if(rpair.root.right!=null)  que.addLast(new pairVO(rpair.root.right,rpair.vl));
+            }
+        }
+        for(ArrayList<Integer> ar:ans){
+            for(int i:ar)
+                System.out.print(i+",");
+            System.out.println();
+        }
+    }
+    
