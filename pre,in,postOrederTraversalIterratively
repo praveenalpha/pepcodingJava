@@ -1,0 +1,81 @@
+//EXTRA CLASS =================================================================================
+    //pre order traversal iteratively==============================================================
+    public static class tPair{ // Traversal pair
+        node root;
+        boolean selfDone;
+        boolean leftDone;
+        boolean rightDone;
+        tPair(node root, boolean selfDone,boolean leftDone,boolean rightDone){
+            this.root = root;
+            this.selfDone = selfDone;
+            this.leftDone = leftDone;
+            this.rightDone = rightDone;
+        }
+    }
+    public static void preOrderItr(node root){
+        Stack<tPair> st = new Stack<>();
+        st.push(new tPair(root,false,false,false));
+        while(st.size()!=0){
+            if(st.peek().selfDone==false){
+                st.peek().selfDone = true;
+                System.out.print(st.peek().root.data+" ");
+            }
+            else if(st.peek().leftDone==false){
+                st.peek().leftDone = true;
+                if(st.peek().root.left!=null)
+                    st.push(new tPair(st.peek().root.left,false,false,false));
+            }
+            else if(st.peek().rightDone==false){
+                st.peek().rightDone = true;
+                if(st.peek().root.right!=null)
+                    st.push(new tPair(st.peek().root.right,false,false,false));
+            }
+            else st.pop();
+        }
+    }
+    public static void inOrderItr(node root){
+        Stack<tPair> st = new Stack<>();
+        st.push(new tPair(root,false,false,false));
+        while(st.size()!=0){
+            if(st.peek().leftDone==false){
+                st.peek().leftDone = true;
+                if(st.peek().root.left!=null)
+                    st.push(new tPair(st.peek().root.left,false,false,false));
+            }
+            else if(st.peek().selfDone==false){
+                st.peek().selfDone = true;
+                System.out.print(st.peek().root.data+" ");
+            }
+            
+            else if(st.peek().rightDone==false){
+                st.peek().rightDone = true;
+                if(st.peek().root.right!=null)
+                    st.push(new tPair(st.peek().root.right,false,false,false));
+            }
+            else st.pop();
+        }
+    }    
+    public static void postOrderItr(node root){
+        Stack<tPair> st = new Stack<>();
+        st.push(new tPair(root,false,false,false));
+        while(st.size()!=0){
+            if(st.peek().leftDone==false){
+                st.peek().leftDone = true;
+                if(st.peek().root.left!=null)
+                    st.push(new tPair(st.peek().root.left,false,false,false));
+            }
+            
+            else if(st.peek().rightDone==false){
+                st.peek().rightDone = true;
+                if(st.peek().root.right!=null)
+                    st.push(new tPair(st.peek().root.right,false,false,false));
+            }
+            else if(st.peek().selfDone==false){
+                st.peek().selfDone = true;
+                System.out.print(st.peek().root.data+" ");
+            }
+            
+            else st.pop();
+        }
+    }
+    
