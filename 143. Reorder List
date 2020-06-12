@@ -1,0 +1,53 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode reverse(ListNode head){
+        if(head == null || head.next == null)   return head;
+        ListNode prev = null;
+        ListNode curr = head;
+        ListNode forw = head.next;
+        while(forw != null){
+            curr.next = prev;
+            prev = curr;
+            curr = forw;
+            forw = forw.next;
+        }
+        curr.next = prev;
+        return curr;
+    }
+    public ListNode getMid(ListNode head){
+        if(head == null || head.next == null)   return head;
+        ListNode slow = head;
+        ListNode fast = head;
+        while(fast.next != null && fast.next.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+    public void reorderList(ListNode head) {
+        //System.out.print(reverse(head).val);
+        if(head == null || head.next == null)   return;
+        ListNode curr1 = head;
+        ListNode midNode = getMid(head);
+        ListNode curr2 = midNode.next;
+        curr2 = reverse(curr2);
+        midNode.next = null;
+        while(curr1!=null && curr2!=null){
+            ListNode forw = curr1.next;
+            ListNode forw2 = curr2.next;
+            curr1.next = curr2;
+            curr2.next = forw;
+            curr1 = forw;
+            curr2 = forw2;
+        }
+        }
+    }
