@@ -1,0 +1,12 @@
+class Solution {
+public:
+    string removeOuterParentheses(string S) {
+        string ans = "";
+        int count = 0;
+        for(char ch : S) {
+            if(ch == '(' && count++ > 0)    ans += '(';
+            else if(ch == ')' && count-- > 1)   ans += ')';
+        }
+        return ans;
+    }
+};
