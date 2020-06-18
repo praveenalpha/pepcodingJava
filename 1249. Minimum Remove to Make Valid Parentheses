@@ -1,0 +1,27 @@
+class Solution {
+public:
+    string minRemoveToMakeValid(string s) {
+        int n = s.length();
+        vector<bool> mark(n,false);
+        stack<int> st;
+        st.push(-1);
+        for(int i = 0;i<n;i++){
+            if(s[i] == ')' && st.top() != -1) {
+                mark[i] = true;
+                mark[st.top()] = true;
+                st.pop();
+            }
+            else if(s[i] == '(') {
+                st.push(i);
+            }
+            else if(s[i] != '(' && s[i] != ')')    {
+                mark[i] = true;
+            }
+        }
+        string ans;
+        for(int i = 0 ; i < n ; i++) {
+            if(mark[i]) ans+=s[i];
+        }
+        return ans;
+    }
+};
