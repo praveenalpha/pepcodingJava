@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int minAddToMakeValid(string S) {
+        stack<char> st;
+        int count = 0;
+        for(char ch : S){
+            if(ch == '('){
+                st.push(ch);
+                count++;
+            }
+            else if(ch == ')'){
+                if(st.size()!=0 && st.top() == '('){
+                    st.pop();
+                    count--;
+                }
+                else{
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+};
