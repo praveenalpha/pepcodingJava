@@ -1,0 +1,47 @@
+class Solution {
+public:
+    int maxRectangle(vector<int> arr) {
+        stack<int> st;
+        st.push(-1);
+        int maxArea = 0;
+        for(int i=0;i<arr.size();i++) {
+            while(st.top() != -1 && arr[i] <= arr[st.top()]) {
+                int height = arr[st.top()];
+                st.pop();
+                int width = i - st.top() - 1;
+                int area = height*width;
+                maxArea = max(maxArea,area);
+            }
+            st.push(i);
+        }
+        while(st.top()!=-1) {
+            int height = arr[st.top()];
+            st.pop();
+            int width = arr.size() - st.top() - 1;
+            int area = height*width;
+            maxArea = max(maxArea,area);
+        }
+        return maxArea;
+    }
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        if(matrix.size() == 0 || matrix[0].size() == 0){
+            return 0;
+        }
+        int maxAns = 0;
+        vector<int> prefixSum(matrix[0].size(),0);
+        for(int i = 0;i<matrix.size();i++) {
+            for(int j = 0;j<matrix[0].size();j++){
+                if(matrix[i][j]=='1'){
+                    prefixSum[j]+=1;
+                }
+                else{
+                    prefixSum[j]=0;
+                }
+            }
+            int ans = maxRectangle(prefixSum);
+            cout<<ans<<",";
+            maxAns = max(ans,maxAns);
+        }
+        return maxAns;
+    }
+};
