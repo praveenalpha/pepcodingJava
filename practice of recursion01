@@ -73,32 +73,62 @@ int subseq(string str,string ans) {
     count+=subseq(nstr,ans+ch);
     return count;
 }
-//keyPad=======================================================================================================
-string words[] = {".","abc","def","ghi","jkl","mno","pqrs","tuv","wx","yz"};
-   vector<string> keyPad(string str)
-    {
-        if(str.length() == 0){
-            vector<string> ans;
-            ans.push_back("");
-            return ans;
-        }
-        char ch = str[0];
-        string nstr = str.substr(1);
-        vector<string> smallAns = keyPad(nstr);
+//permutation=================================================================================================
+vector<string> permutation(string str) {
+    if(str.length() == 0) {
         vector<string> ans;
-        for(string word : smallAns) {
-            for(int i=0;i<words[ch-'0'].length();i++){
-                ans.push_back(words[ch-'0'][i]+word);
-            }
-        }
+        ans.push_back("");
         return ans;
     }
+    char ch = str[0];
+    string nstr = str.substr(1);
+    vector<string> smallAns = permutation(nstr);
+    vector<string> ans;
+    for(string eachString : smallAns) {
+        for(int i = 0;i<=eachString.length();i++){
+            ans.push_back(eachString.substr(0,i) + ch + eachString.substr(i));
+        }
+    }
+    return ans;
+}
+int permutation02(string str,string ans) {
+    if(str.length()==0){
+        cout<<ans<<",";
+        return 1;
+    }
+    int count = 0;
+    for(int i=0;i<str.length();i++){
+        char ch = str[i];
+        string nstr = str.substr(0,i) + str.substr(i+1);
+        count+=permutation02(nstr,ans+ch);
+    }
+    return count;
+}
+//keyPad=======================================================================================================
+string words[] = {".","abc","def","ghi","jkl","mno","pqrs","tuv","wx","yz"};
+vector<string> keyPad(string str) {
+    if(str.length() == 0) {
+        vector<string> ans ; 
+        ans.push_back("");
+        return ans;
+    }
+    char ch = str[0];
+    string nstr = str.substr(1);
+    vector<string> smallAns = keyPad(nstr);
+    vector<string> ans;
+    for(string everyString : smallAns) {
+        for(int i=0;i<words[ch-'0'].length();i++){
+            ans.push_back(words[ch-'0'][i]+everyString);
+        }
+    }
+    return ans;
+}
 
 //SOLVE========================================================================================================
 void solve(){
     
-    cout<<subseq("abc","");
-    
+    cout<<permutation02("abc","");
+       
 }
 int main(){
     solve();
