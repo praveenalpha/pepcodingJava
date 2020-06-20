@@ -44,6 +44,35 @@ vector<int> allIndex(vector<int> arr,int idx,int data) {
     }
     return res;
 }
+//subsequence==================================================================================================
+vector<string> subsequence(string str) {
+    if(str.length() == 0){
+        vector<string> ans;
+        ans.push_back("");
+        return ans;
+    }
+    vector<string> ans;
+    char ch = str[0];
+    string nstr = str.substr(1);
+    vector<string> smallAns = subsequence(nstr);
+    for(string everyString : smallAns) {
+        ans.push_back(everyString);
+        ans.push_back(ch+everyString);
+    }
+    return ans;
+}
+int subseq(string str,string ans) {
+    if(str.length() == 0){
+        cout<<ans<<",";
+        return 1;
+    }
+    char ch = str[0];
+    string nstr = str.substr(1);
+    int count = 0;
+    count+=subseq(nstr,ans);
+    count+=subseq(nstr,ans+ch);
+    return count;
+}
 //keyPad=======================================================================================================
 string words[] = {".","abc","def","ghi","jkl","mno","pqrs","tuv","wx","yz"};
    vector<string> keyPad(string str)
@@ -68,10 +97,8 @@ string words[] = {".","abc","def","ghi","jkl","mno","pqrs","tuv","wx","yz"};
 //SOLVE========================================================================================================
 void solve(){
     
-    vector<string> ans = keyPad("169");
-    for(int i=0;i<ans.size();i++){
-        cout<<ans[i]<<",";
-    }
+    cout<<subseq("abc","");
+    
 }
 int main(){
     solve();
