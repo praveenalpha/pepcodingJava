@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<int> ngor(vector<int> arr) {
+        int n = arr.size();
+        vector<int> ans(n,-1);
+        stack<int> st;
+        st.push(-1);
+        for(int i=0;i<n;i++){
+            while(st.top()!=-1 && arr[st.top()]<arr[i]){
+                ans[st.top()] = arr[i];
+                st.pop();
+            }
+            st.push(i);
+        }
+        return ans;
+    }
+    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
+        vector<int> nextGreater = ngor(nums2);
+        int n = nums1.size();
+        int m = nums2.size();
+        vector<int> ans(n,-1);
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(nums1[i]==nums2[j]){
+                    ans[i]=nextGreater[j];
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+};
