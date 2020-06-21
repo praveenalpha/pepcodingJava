@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        
+        int lp = 0;
+        int rp = height.size()-1;
+        int maxLeft = 0;
+        int maxRight = 0;
+        int ans = 0;
+        while(lp<rp) {
+            maxLeft = max(maxLeft,height[lp]);
+            maxRight = max(maxRight,height[rp]);
+            
+            if(height[lp]<=height[rp]){
+                int minimum = min(maxLeft,maxRight);
+                ans += minimum - height[lp];
+                lp++;
+            }
+            else{
+                int minimum = min(maxLeft,maxRight);
+                ans += minimum - height[rp];
+                rp--;
+            }
+        }
+        return ans;
+    }
+};
