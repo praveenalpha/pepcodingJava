@@ -104,6 +104,7 @@ int permutation02(string str,string ans) {
     }
     return count;
 }
+
 //keyPad=======================================================================================================
 string words[] = {".","abc","def","ghi","jkl","mno","pqrs","tuv","wx","yz"};
 vector<string> keyPad(string str) {
@@ -123,11 +124,23 @@ vector<string> keyPad(string str) {
     }
     return ans;
 }
-
+int keyPadTemp(string str,string ans){
+    if(str.length()==0){
+        cout<<ans<<",";
+        return 1;
+    }
+    int count= 0;
+    for(char ch:words[str[0]-'0']){
+        count+=keyPadTemp(str.substr(1),ans+ch);
+    }
+    return count;
+}
 //SOLVE========================================================================================================
 void solve(){
     
-    cout<<permutation02("abc","");
+    int ans = keyPadTemp("169","");
+    cout <<ans;
+    
        
 }
 int main(){
