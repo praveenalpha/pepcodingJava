@@ -1,0 +1,148 @@
+#include<iostream>
+#include<vector>
+#include<string>
+using namespace std;
+int mazePath(int sr,int sc,int er,int ec){
+    if(sr == er && sc ==ec)
+        return 1;
+    int count = 0;
+    if(sc+1 <= ec)
+        count+=mazePath(sr,sc+1,er,ec);
+    if(sc+1 <= ec && sr+1 <= er)
+        count+=mazePath(sr+1,sc+1,er,ec);
+    if(sr+1 <= er)
+        count+=mazePath(sr+1,sc,er,ec);
+    return count;
+}
+int mazePathHV(int sr, int sc, int er, int ec, vector<vector<int>> &dp)
+{
+    if(sr == er && sc == ec){
+        return dp[er][ec] = 1;
+    }
+    if(dp[sr][sc] != 0){
+        return dp[sr][sc];
+    }
+    int count = 0;
+    if(sc+1 <= ec){
+        count += mazePathHV(sr,sc+1,er,ec,dp);
+    }
+    if(sc+1 <= ec && sr+1 <= er){
+        count += mazePathHV(sr+1,sc+1,er,ec,dp);
+    }
+    if(sr+1 <= er){
+        count += mazePathHV(sr+1,sc,er,ec,dp);
+    }
+    return dp[sr][sc]=count;
+}
+int mazePathHVDP(int sr,int sc,int er,int ec,vector<vector<int>> &dp){
+    for(int i=er;i>=0;i--){
+        for(int j=ec;j>=0;j--){
+            if(i == er && j == ec){
+                dp[er][ec] = 1;
+                continue;
+            }
+            int count=0;
+            if(j+1 <= ec)
+                count+=dp[i][j+1];
+            if(j+1 <= ec && i+1 <= er)
+                count+=dp[i+1][j+1];
+            if(i+1 <= er)
+                count+=dp[i+1][j];
+            dp[i][j]=count;
+        }
+    }
+    return dp[0][0];
+}
+int mazePathMulti(int sr,int sc,int er,int ec,vector<vector<int>>& dp){
+    if(sr == er && sc == ec){
+        return dp[sr][sc] = 1;
+    }
+    if(dp[sr][sc] != 0){
+        return dp[sr][sc];
+    }
+    int count = 0;
+    for(int jump = 1 ; jump + sc <= ec ; jump++){
+        count += mazePathMulti(sr , sc+jump , er , ec , dp);
+    }
+    for(int jump = 1 ; jump + sr <= er && jump + sc <= ec ; jump++){
+        count += mazePathMulti(sr+jump , sc+jump , er , ec , dp);
+    }
+    for(int jump = 1 ; jump + sr <= er ; jump++){
+        count += mazePathMulti(sr+jump , sc , er , ec , dp);
+    }
+    return dp[sr][sc]=count;
+}
+int mazePathMultiDP(int sr , int sc , int er , int ec , vector<vector<int>>& dp){
+    for(int i = er ; i >= 0 ; i--){
+        for(int j = ec ; j >= 0 ; j--){
+            if(i == er && j == ec){
+                dp[er][ec] = 1;
+                continue;
+            }
+            int count = 0;
+            for(int jump = 1 ; jump + j <= ec ; jump++){
+                count += dp[i][j+jump];
+            }
+            for(int jump = 1 ; jump + j <= ec && jump + i <= er ; jump++){
+                count += dp[i+jump][j+jump];
+            }
+            for(int jump = 1 ; jump + i <= er ; jump++){
+                count += dp[i+jump][j];
+            }
+            dp[i][j] = count;
+        }
+    }
+    return dp[sr][sc];
+}
+//pairOrSingle=====================================================================================================================
+int pairOrSingle(int n){
+    if(n<=1)
+        return 1;
+    int single = pairOrSingle(n-1);
+    int pair = pairOrSingle(n-2)*(n-1);
+    return single+pair;
+}
+int pairOrSingleMemo(int n,vector<int>& memo){
+    if(n<=1)
+        return memo[n]=1;
+    if(memo[n]!=0)
+        return memo[n];
+    int single = pairOrSingleMemo(n-1,memo);
+    int pair = pairOrSingleMemo(n-2,memo)*(n-1);
+    return memo[n]=(single+pair);
+}
+int pairOrSingleDP(int n,vector<int>& dp){
+    for(int i=0;i<=n;i++){
+        if(i<=1){
+            dp[i]=1;
+            continue;
+        }
+        int single = dp[i-1];//pairOrSingleMemo(n-1,memo);
+        int pair = dp[i-2]*(i-1);//pairOrSingleMemo(n-2,memo)*(n-1);
+        dp[i] = single+pair;
+    }
+    return dp[n];
+}
+//goldmine========================================================================================================================
+
+//https://www.geeksforgeeks.org/count-number-of-ways-to-partition-a-set-into-k-subsets/============================================
+
+//solve============================================================================================================================
+void display2d(vector<vector<int>>& dp){
+    for(int i=0;i<dp.size();i++){
+        for(int j=0;j<dp[0].size();j++){
+            cout<<dp[i][j]<<" ,";
+        }
+        cout<<endl;
+    }
+}
+void solve(){
+    vector<vector<int>> dp = {{0,0,0},{0,0,0},{0,0,0}};
+    int ans = mazePathMultiDP(0,0,2,2,dp); 
+    display2d(dp);
+    cout<<ans;
+}
+int main(){
+    solve();
+    return 0;
+}
