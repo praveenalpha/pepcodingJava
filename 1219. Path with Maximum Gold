@@ -1,0 +1,27 @@
+class Solution {
+public:
+    vector<vector<int>> dirA = {{0,-1},{-1,0},{0,1},{1,0}};
+    int maxGold(int sr,int sc,vector<vector<int>>& grid){
+        int count = 0;
+        grid[sr][sc]=-grid[sr][sc];
+        for(int d = 0;d<4;d++){
+            int r = sr  + dirA[d][0];
+            int c = sc  + dirA[d][1];
+            if(r>=0&&c>=0&&r<grid.size()&&c<grid[0].size()&&grid[r][c]>0)
+                count=max(count,maxGold(r,c,grid));
+        }
+        grid[sr][sc]=-grid[sr][sc];
+        return count+grid[sr][sc];
+    }
+    int getMaximumGold(vector<vector<int>>& grid) {
+        int gold=0;
+        for(int i=0;i<grid.size();i++){
+            for(int j=0;j<grid[0].size();j++){
+                if(grid[i][j]!=0){
+                    gold = max(gold,maxGold(i,j,grid));
+                }
+            }
+        }
+        return gold;
+    }
+};
