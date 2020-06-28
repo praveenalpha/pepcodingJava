@@ -1,0 +1,61 @@
+#include <bits/stdc++.h>
+using namespace std;
+vector<vector<int>> dirA = {{-1,1},{0,1},{1,1}};
+
+int goldMin_DP(vector<vector<int>> &grid, vector<vector<int>> &dp)
+{
+
+    for (int sc = grid[0].size() - 1; sc >= 0; sc--)
+    {
+        for (int sr = grid.size() - 1; sr >= 0; sr--)
+        {
+            if (sc == grid[0].size() - 1)
+            {
+                dp[sr][sc] = grid[sr][sc];
+                continue;
+            }
+
+            int dir[3][2] = {{-1, 1}, {0, 1}, {1, 1}};
+            int maxCoins = 0;
+            for (int d = 0; d < 3; d++)
+            {
+                int x = sr + dir[d][0];
+                int y = sc + dir[d][1];
+                if (x >= 0 && y >= 0 && x < grid.size() && y < grid[0].size())
+                    maxCoins = max(maxCoins, dp[x][y]);
+            }
+
+            dp[sr][sc] = maxCoins + grid[sr][sc];
+        }
+    }
+
+    int maxCoin = 0;
+    for (int i = 0; i < grid.size(); i++)
+        maxCoin = max(maxCoin, dp[i][0]);
+    return maxCoin;
+}
+
+int main() {
+    int t;
+    cin>>t;
+    while(t--){
+        int n,m;
+        cin>>n>>m;
+        vector<vector<int>> arr;
+        for(int i=0;i<n;i++)
+            arr.push_back(vector<int> (m,0));
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                cin>>arr[i][j];
+            }
+        }
+        int max_ = 0;
+        
+        vector<vector<int>> dp;
+        for(int i=0;i<n;i++)
+            dp.push_back(vector<int> (m,0));
+        max_ = goldMin_DP(arr,dp);
+        cout<<max_<<'\n';
+    }
+	return 0;
+}
