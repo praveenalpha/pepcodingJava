@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int longestPalindromeSubseqDP(string& s, int si, int ei, vector<vector<int>> &dp)
+{
+    int n = s.length();
+    for (int gap = 0; gap < n; gap++)
+    {
+        for (int  i = 0, j = gap; j < n; i++, j++)
+        {
+            if(i==j){
+                dp[i][j]=1;
+                continue;
+            }
+            if(s[i]==s[j])
+            {
+                dp[i][j]=2+dp[i+1][j-1];
+            }
+            else
+            {
+                dp[i][j]=max(dp[i][j-1],dp[i+1][j]);
+            }
+        }
+    }
+    return dp[0][ei];
+}
+
+    int longestPalindromeSubseq(string& s) {
+        int n=s.length();
+        vector<vector<int>> dp(n,vector<int> (n,0));
+        return longestPalindromeSubseqDP(s,0,n-1,dp);
+    }
+};
