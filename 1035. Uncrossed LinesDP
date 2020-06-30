@@ -1,0 +1,31 @@
+class Solution {
+  public:
+    int maxSubseq(vector < int > & A, vector < int > & B, int i, int j, vector < vector < int >> & dp) {
+      for (int i = A.size(); i >= 0; i--) {
+        for (int j = B.size(); j >= 0; j--) {
+          if (i == A.size() || j == B.size()){
+            dp[i][j] = 0;
+            continue;
+          }
+
+          int fMax = 0;
+          if (A[i] == B[j]) {
+            fMax = max(fMax, 1 + dp[i+1][j+1]);
+          } else {
+            int a = dp[i+1][j];
+            int b = dp[i][j+1];
+            fMax = max(a, max(fMax, b));
+          }
+          dp[i][j] = fMax;
+        }
+      }
+      return dp[i][j];
+    }
+  int maxUncrossedLines(vector < int > & A, vector < int > & B) {
+    int n = A.size();
+    int m = B.size();
+
+    vector < vector < int >> dp(n + 1, vector < int > (m + 1, -1));
+    return maxSubseq(A, B, 0, 0, dp);;
+  }
+};
