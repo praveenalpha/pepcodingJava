@@ -1,0 +1,28 @@
+class Solution {
+  public:
+
+    int lcs(string & s, string & t, int i, int j, vector < vector < int >> & dp) {
+      for (int i = s.length(); i >= 0; i--) {
+        for (int j = t.length(); j >= 0; j--) {
+          if (i == s.length() || j == t.length()){
+            dp[i][j] = 0;
+            continue;
+          }
+          int ans = 0;
+          if (s[i] == t[j])
+            ans = max(ans, dp[i+1][j+1] + 1);
+          else {
+            int a = dp[i+1][j];
+            int b = dp[i][j+1];
+            ans = max(ans, max(a, b));
+          }
+          dp[i][j] = ans;
+        }
+      }
+        return dp[i][j];
+    }
+  int longestCommonSubsequence(string text1, string text2) {
+    vector < vector < int >> dp(text1.size() + 1, vector < int > (text2.size() + 1, -1));
+    return lcs(text1, text2, 0, 0, dp);
+  }
+};
