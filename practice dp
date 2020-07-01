@@ -229,8 +229,10 @@ int minCostDP(int n, vector<int> &cost, vector<int> &dp)
 
 //https://www.geeksforgeeks.org/count-number-of-ways-to-partition-a-set-into-k-subsets/============================================
 
+// https://practice.geeksforgeeks.org/problems/mobile-numeric-keypad/0=============================================================
+
 //substring and subsequence========================================================================================================
-vector<vector<bool>> isPalindromic(string str, vector<vector<bool>> &dp)
+vector<vector<bool>> isPalindromic(string &str, vector<vector<bool>> &dp)
 {
     int n = str.length();
     for (int gap = 0; gap < n; gap++)
@@ -246,6 +248,166 @@ vector<vector<bool>> isPalindromic(string str, vector<vector<bool>> &dp)
         }
     }
     return dp;
+}
+//05 leetcode====================================================================================================================
+string longestPlaindromeSubstring(string str)
+{
+    int n = str.length();
+    vector<vector<int>> dp(n, vector<int>(n, 0));
+
+    int maxLen = 0;
+    int si = 0, ei = 0;
+    for (int gap = 0; gap < n; gap++)
+    {
+        for (int i = 0, j = gap; j < n; i++, j++)
+        {
+            if (gap == 0)
+                dp[i][j] = 1;
+            else if (gap == 1 && str[i] == str[j])
+                dp[i][j] = 2;
+            else if (str[i] == str[j] && dp[i + 1][j - 1] != 0)
+                dp[i][j] = gap + 1;
+
+            if (dp[i][j] > maxLen)
+            {
+                maxLen = dp[i][j];
+                si = i;
+                ei = j;
+            }
+        }
+    }
+
+    return str.substr(si, (ei - si + 1));
+}
+//647============================================================================================================================
+int countSubstrings(string s)
+{
+    int n = s.length();
+    int count = 0;
+    vector<vector<bool>> dp(n, vector<bool>(n, 0));
+    for (int gap = 0; gap < n; gap++)
+    {
+        for (int i = 0, j = gap; j < n; i++, j++)
+        {
+            if (gap == 0)
+                dp[i][j] = true;
+            else if (gap == 1 && s[i] == s[j])
+                dp[i][j] = true;
+            else
+                dp[i][j] = s[i] == s[j] && dp[i + 1][j - 1];
+            count += dp[i][j] ? 1 : 0;
+        }
+    }
+    return count;
+}
+//Leetcode 516.================================================================================================================
+int longestPalindromeSubseq(string s, int si, int ei, vector<vector<int>> &dp)
+{
+    if (si > ei)
+        return dp[si][ei] = 0;
+    if (si == ei)
+        return dp[si][ei] = 1;
+    int len;
+    if (dp[si][ei] != 0)
+        return dp[si][ei];
+    if (s[si] == s[ei])
+        len = longestPalindromeSubseq(s, si + 1, ei - 1, dp) + 2;
+    else
+        len = max(longestPalindromeSubseq(s, si + 1, ei, dp), longestPalindromeSubseq(s, si, ei - 1, dp));
+    return dp[si][ei] = len;
+}
+int longestPalindromeSubseqDP(string s, int si, int ei, vector<vector<int>> &dp)
+{
+    int n = s.length();
+    for (int gap = 0; gap < n; gap++)
+    {
+        for (int i = 0, j = gap; j < n; i++, j++)
+        {
+            if (i == j)
+            {
+                dp[i][j] = 1;
+                continue;
+            }
+            if (s[i] == s[j])
+            {
+                dp[i][j] = 2 + dp[i + 1][j - 1];
+            }
+            else
+            {
+                dp[i][j] = max(dp[i][j - 1], dp[i + 1][j]);
+            }
+        }
+    }
+    return dp[0][ei];
+}
+//distinctSubsequence================================================================================================================
+int distinctSubsequence(string &s, string &t, int n, int m, vector<vector<int>> &dp, string ans)
+{
+    if (m == 0)
+    {
+        cout << ans << endl;
+        return dp[n][m] = 1;
+    }
+    if (m > n)
+    {
+        return 0;
+    }
+    if (dp[n][m] != -1)
+        return dp[n][m];
+    int count = 0;
+    if (s[n - 1] == t[m - 1])
+    {
+        count += distinctSubsequence(s, t, n - 1, m, dp, s[n - 1] + to_string(n) + t[m - 1] + to_string(m) + ans) + distinctSubsequence(s, t, n - 1, m - 1, dp, s[n - 1] + to_string(n) + t[m - 1] + to_string(m) + ans);
+    }
+    else
+    {
+        count += distinctSubsequence(s, t, n - 1, m, dp, ans);
+    }
+    return dp[n][m] = count;
+}
+//countPalindromicSubsequence========================================================================================================
+int countPS_(string &s, int i, int j, int dp[31][31])
+{
+    if (i > j)
+        return 0;
+    if (i == j)
+        return dp[i][j] = 1;
+    if (dp[i][j] != 0)
+        return dp[i][j];
+
+    int middleString = countPS_(s, i + 1, j - 1, dp);
+    int excludingLast = countPS_(s, i, j - 1, dp);
+    int excludingFirst = countPS_(s, i + 1, j, dp);
+
+    int ans = excludingFirst + excludingLast;
+    return dp[i][j] = (s[i] == s[j]) ? ans + 1 : ans - middleString;
+}
+int countPSDP(string &s, vector<vector<int>> &dp)
+{
+    for (int gap = 0; gap < s.length(); gap++)
+    {
+        for (int i = 0; i < s.length(); i++)
+        {
+            for (int j = gap; j < s.length(); j++)
+            {
+                if(i>j){
+                    dp[i][j] = 0;
+                    continue;
+                }
+                if (i == j)
+                {
+                    dp[i][j] = 1;
+                    continue;
+                }
+                int middle = dp[i + 1][j - 1];
+                int excludeFirst = dp[i + 1][j];
+                int excludeLast = dp[i][j - 1];
+                int ans = excludeFirst + excludeLast;
+                dp[i][j] = s[i] == s[j] ? ans + 1 : ans - middle;
+            }
+        }
+    }
+    return dp[0][s.length() - 1];
 }
 //solve============================================================================================================================
 void display2d(vector<vector<int>> &dp)
@@ -267,16 +429,13 @@ void display1d(vector<int> &dp)
 }
 void solve()
 {
-    //vector<vector<int>> dp = {{0,0,0},{0,0,0},{0,0,0}};
-    string str = "abcdedcbaef";
-    int n = str.length();
-    vector<vector<bool>> dp(n, vector<bool> (n, false));
-    vector<vector<bool>> ans = isPalindromic(str, dp);
-    for(vector<bool> s:ans){
-        for(bool e:s)
-            cout<<e<<" ";
-        cout<<endl;
-    }
+    
+    string s = "abcd";
+    vector<vector<int>> dp(4,vector<int>(4,-1));
+    //int ans = countPS_(s,0,j-1,dp);
+    //cout<<ans<<endl;
+    cout<<countPSDP(s,dp)<<endl;
+    display2d(dp);
 }
 int main()
 {
