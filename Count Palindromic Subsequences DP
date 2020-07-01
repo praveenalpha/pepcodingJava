@@ -1,0 +1,60 @@
+// { Driver Code Starts
+// Counts Palindromic Subsequence in a given String
+#include<iostream>
+#include<cstring>
+using namespace std;
+ 
+// Function return the total palindromic subsequence
+int countPS(string str);
+ 
+// Driver program
+int main()
+{
+   int t;
+	cin>>t;
+   while(t--)
+	{
+	string str;
+cin>>str;
+cout<<countPS(str)<<endl;
+} 
+}// } Driver Code Ends
+
+int dp[31][31]={0};
+int countPS_(string &s){
+    for(int gap=0;gap<s.length();gap++){
+    for(int i=0;i<s.length();i++){
+        for(int j=gap;j<s.length();j++){
+            if(i>j){
+                dp[i][j]=0;
+                continue;
+            }
+            if(i==j){
+                dp[i][j]=1;
+                continue;
+            }
+            int middle = dp[i+1][j-1];
+            int excludeFirst = dp[i+1][j];
+            int excludeLast = dp[i][j-1];
+            int ans = excludeFirst + excludeLast;
+            dp[i][j] = s[i]==s[j]?ans + 1 : ans - middle;
+                
+        }
+    }
+    }
+    return dp[0][s.length()-1];
+}
+
+/*You are required to complete below method */
+int countPS(string str)
+{
+    
+    for(int i=0;i<str.length();i++){
+        for(int j=0;j<str.length();j++){
+            dp[i][j]=-1;
+        }
+    }
+    return countPS_(str);
+   //Your code here
+}
+ 
