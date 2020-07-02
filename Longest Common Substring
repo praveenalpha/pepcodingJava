@@ -1,0 +1,37 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int max_;
+int LCS(string& s,string& t,int i,int j,vector<vector<int>>& dp) {
+    if(i == s.length() || j == t.length())
+        return dp[i][j] = 0;
+    if(dp[i][j] != -1)
+        return dp[i][j];
+    LCS(s,t,i+1,j,dp);
+    LCS(s,t,i,j+1,dp);
+    if(s[i] == t[j]){
+        int a = LCS(s,t,i+1,j+1,dp) + 1;
+        max_ = max(max_,a);
+        return dp[i][j] = a;
+    }
+    return dp[i][j]=0;
+}
+int main() {
+	//code
+	int t;
+	cin>>t;
+	while(t--){
+	    int n,m;
+	    cin>>n>>m;
+	    string s,t;
+	    cin>>s>>t;
+	    max_ = 0;
+	    vector<vector<int>> dp(n+1,vector<int>(m+1,-1));
+	    LCS(s,t,0,0,dp);
+	    cout<<max_<<'\n';
+	}
+	return 0;
+}
