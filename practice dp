@@ -514,7 +514,35 @@ int permutationInfinite(vector<int> &coins, int tar, vector<int> &dp)
     }
     return dp[tar] = count;
 }
-int permutationInfiniteDP(vector<int> &coins, int tar, vector<int> &dp)
+int coinChangePermutation_DP(vector<int> &arr, int tar, vector<int> &dp)
+{
+    dp[0] = 1;
+    int Tar = tar;
+    for (int tar = 1; tar <= Tar; tar++)
+    {
+        int count = 0;
+        for (int ele : arr)
+            if (tar - ele >= 0)
+                count += dp[tar - ele];
+
+        dp[tar] = count;
+    }
+}
+int combinationInfinite(vector<int> &coins, int idx, int tar, vector<int> &dp)
+{
+    if (tar == 0)
+        return dp[tar] = 1;
+    if (dp[tar] != -1)
+        return dp[tar];
+    int count = 0;
+    for (int i = idx; i < coins.size(); i++)
+    {
+        if (tar - coins[i] >= 0)
+            count += combinationInfinite(coins, i, tar - coins[i], dp);
+    }
+    return dp[tar] = count;
+}
+int combinationInfiniteDP(vector<int> &coins, int idx, int tar, vector<int> &dp)
 {
     int Tar = tar;
     for (int tar = 0; tar <= Tar; tar++)
@@ -525,16 +553,16 @@ int permutationInfiniteDP(vector<int> &coins, int tar, vector<int> &dp)
             continue;
         }
         int count = 0;
-        for (int ele : coins)
+        for (int i = idx; i < coins.size(); i++)
         {
-            if (tar - ele >= 0)
-                count += dp[tar-ele];
+            if (tar - coins[i] >= 0)
+                count += dp[tar - coins[i]];
+            idx = i;
         }
         dp[tar] = count;
     }
-    return dp[tar];
+    return dp[Tar];
 }
-
 //solve============================================================================================================================
 void display2d(vector<vector<int>> &dp)
 {
@@ -563,7 +591,7 @@ void solve()
     //int ans = countPS_(s,0,j-1,dp);
     //cout<<ans<<endl;
 
-    cout << permutationInfiniteDP(coins, 10, dp) << endl;
+    cout << coinChangePermutation_DP(coins, 10, dp) << endl;
     display1d(dp);
 }
 int main()
