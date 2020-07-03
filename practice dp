@@ -390,7 +390,8 @@ int countPSDP(string &s, vector<vector<int>> &dp)
         {
             for (int j = gap; j < s.length(); j++)
             {
-                if(i>j){
+                if (i > j)
+                {
                     dp[i][j] = 0;
                     continue;
                 }
@@ -409,6 +410,131 @@ int countPSDP(string &s, vector<vector<int>> &dp)
     }
     return dp[0][s.length() - 1];
 }
+//longestCommonSubsequence==========================================================================================================
+int lcs(string &s, string &t, int i, int j, vector<vector<int>> &dp)
+{
+    if (i == s.length() || j == t.length())
+        return dp[i][j] = 0;
+    if (dp[i][j] != -1)
+        return dp[i][j];
+    int ans;
+    if (s[i] == t[j])
+    {
+        ans = 1 + lcs(s, t, i + 1, j + 1, dp);
+    }
+    else
+    {
+        ans = max(lcs(s, t, i + 1, j, dp), lcs(s, t, i, j + 1, dp));
+    }
+    return dp[i][j] = ans;
+}
+int lcsDP(string &s, string &t, int i, int j, vector<vector<int>> &dp)
+{
+    for (int i = s.length(); i >= 0; i--)
+    {
+        for (int j = t.length(); j >= 0; j--)
+        {
+            if (i == s.length() || j == t.length())
+            {
+                dp[i][j] = 0;
+                continue;
+            }
+            int ans = 0;
+            if (s[i] == t[j])
+                ans = max(ans, dp[i + 1][j + 1] + 1);
+            else
+            {
+                int a = dp[i + 1][j];
+                int b = dp[i][j + 1];
+                ans = max(ans, max(a, b));
+            }
+            dp[i][j] = ans;
+        }
+    }
+    return dp[i][j];
+}
+//longestCommonSubstring===========================================================================================================
+
+//1035=============================================================================================================================
+int fMax;
+int maxUncrossedLines(vector<int> &A, vector<int> &B, int i, int j, vector<vector<int>> &dp)
+{
+    if (i == A.size() || j == B.size())
+        return dp[i][j] = 0;
+
+    if (dp[i][j] != -1)
+        return dp[i][j];
+    fMax = 0;
+    if (A[i] == B[j])
+    {
+        fMax = max(fMax, 1 + maxUncrossedLines(A, B, i + 1, j + 1, dp));
+    }
+    else
+    {
+        int a = maxUncrossedLines(A, B, i + 1, j, dp);
+        int b = maxUncrossedLines(A, B, i, j + 1, dp);
+        fMax = max(a, max(fMax, b));
+    }
+    return dp[i][j] = fMax;
+}
+int maxUncrossedLinesDP(vector<int> &A, vector<int> &B)
+{
+    int n = A.size(), m = B.size();
+    vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
+    for (int i = n; i >= 0; i--)
+    {
+        for (int j = m; j >= 0; j--)
+        {
+            if (i == n || m == j)
+            {
+                dp[i][j] = 0;
+                continue;
+            }
+            if (A[i] == B[j])
+                dp[i][j] = dp[i + 1][j + 1] + 1;
+            else
+                dp[i][j] = max(dp[i + 1][j], dp[i][j + 1]);
+        }
+    }
+
+    return dp[0][0];
+}
+//coinChange=======================================================================================================================
+int permutationInfinite(vector<int> &coins, int tar, vector<int> &dp)
+{
+    if (tar == 0)
+        return dp[tar] = 1;
+    if (dp[tar] != -1)
+        return dp[tar];
+    int count = 0;
+    for (int ele : coins)
+    {
+        if (tar - ele >= 0)
+            count += permutationInfinite(coins, tar - ele, dp);
+    }
+    return dp[tar] = count;
+}
+int permutationInfiniteDP(vector<int> &coins, int tar, vector<int> &dp)
+{
+    int Tar = tar;
+    for (int tar = 0; tar <= Tar; tar++)
+    {
+        if (tar == 0)
+        {
+            dp[tar] = 1;
+            continue;
+        }
+        int count = 0;
+        for (int ele : coins)
+        {
+            if (tar - ele >= 0)
+                count += dp[tar-ele];
+        }
+        dp[tar] = count;
+    }
+    return dp[tar];
+}
+
 //solve============================================================================================================================
 void display2d(vector<vector<int>> &dp)
 {
@@ -429,13 +555,16 @@ void display1d(vector<int> &dp)
 }
 void solve()
 {
-    
-    string s = "abcd";
-    vector<vector<int>> dp(4,vector<int>(4,-1));
+
+    //string s = "abcd";
+    vector<int> coins = {2, 3, 5, 7};
+    vector<int> dp(11, -1);
+
     //int ans = countPS_(s,0,j-1,dp);
     //cout<<ans<<endl;
-    cout<<countPSDP(s,dp)<<endl;
-    display2d(dp);
+
+    cout << permutationInfiniteDP(coins, 10, dp) << endl;
+    display1d(dp);
 }
 int main()
 {
