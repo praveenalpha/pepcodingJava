@@ -542,26 +542,39 @@ int combinationInfinite(vector<int> &coins, int idx, int tar, vector<int> &dp)
     }
     return dp[tar] = count;
 }
-int combinationInfiniteDP(vector<int> &coins, int idx, int tar, vector<int> &dp)
+int combinationInfiniteDP(vector<int> &arr, int idx, int tar, vector<int> &dp)
 {
+    dp[0] = 1;
     int Tar = tar;
-    for (int tar = 0; tar <= Tar; tar++)
+    for (int ele : arr)
     {
-        if (tar == 0)
-        {
-            dp[tar] = 1;
-            continue;
-        }
         int count = 0;
-        for (int i = idx; i < coins.size(); i++)
+
+        for (int tar = 1; tar <= Tar; tar++)
         {
-            if (tar - coins[i] >= 0)
-                count += dp[tar - coins[i]];
-            idx = i;
+            if (tar - ele >= 0)
+                count += dp[tar - ele];
+
+            dp[tar] = count;
         }
-        dp[tar] = count;
     }
-    return dp[Tar];
+}
+//targetSum========================================================================================================================
+int targetSum(vector<int> &coins, int idx, int sum, vector<vector<int>> &dp)
+{
+    if (sum == 0 || idx == coins.size())
+    {
+        if (sum == 0)
+            return 1;
+        return 0;
+    }
+    if (dp[idx][sum] != 0)
+        return dp[idx][sum];
+    int count = 0;
+    if (sum - coins[idx] >= 0)
+        count += targetSum(coins, idx + 1, sum - coins[idx], dp);
+    count += targetSum(coins, idx + 1, sum, dp);
+    return dp[idx][sum] = count;
 }
 //solve============================================================================================================================
 void display2d(vector<vector<int>> &dp)
@@ -586,13 +599,13 @@ void solve()
 
     //string s = "abcd";
     vector<int> coins = {2, 3, 5, 7};
-    vector<int> dp(11, -1);
+    vector<vector<int>> dp(coins.size() + 1, vector<int>(11, 0));
 
     //int ans = countPS_(s,0,j-1,dp);
     //cout<<ans<<endl;
 
-    cout << coinChangePermutation_DP(coins, 10, dp) << endl;
-    display1d(dp);
+    cout << targetSum(coins, 0, 10, dp) << endl;
+    display2d(dp);
 }
 int main()
 {
