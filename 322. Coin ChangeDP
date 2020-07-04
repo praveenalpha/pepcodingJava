@@ -1,0 +1,57 @@
+class Solution {
+public:
+    int coinChange_(vector<int>& coins, int amount,vector<int>& dp) {
+        for(int i = 0 ; i <=amount;i++) {
+        if(i == 0)
+        {
+            dp[i] = 0;
+            continue;
+        }
+        int heightMin = 1e8;
+        for(int j=0;j<coins.size();j++) {
+            if(i - coins[j] >= 0) {
+                int rHeight = dp[i-coins[j]];
+                if(rHeight != 1e8 && rHeight + 1 < heightMin) {
+                    heightMin = rHeight + 1;
+                }
+            }
+            
+        }
+        dp[i] = heightMin;
+    }
+    return dp[amount];
+    }
+    int coinChange(vector<int>& coins, int amount) {
+        vector<int> dp(amount+1,0);
+        int ans =  coinChange_(coins,amount,dp);
+        return ans !=1e8?ans:-1;
+    }
+};class Solution {
+public:
+    int coinChange_(vector<int>& coins, int amount,vector<int>& dp) {
+        for(int i = 0 ; i <=amount;i++) {
+        if(i == 0)
+        {
+            dp[i] = 0;
+            continue;
+        }
+        int heightMin = 1e8;
+        for(int j=0;j<coins.size();j++) {
+            if(i - coins[j] >= 0) {
+                int rHeight = dp[i-coins[j]];
+                if(rHeight != 1e8 && rHeight + 1 < heightMin) {
+                    heightMin = rHeight + 1;
+                }
+            }
+            
+        }
+        dp[i] = heightMin;
+    }
+    return dp[amount];
+    }
+    int coinChange(vector<int>& coins, int amount) {
+        vector<int> dp(amount+1,0);
+        int ans =  coinChange_(coins,amount,dp);
+        return ans !=1e8?ans:-1;
+    }
+};
