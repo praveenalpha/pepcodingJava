@@ -1,0 +1,55 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+int unbounded(vector<int>& W,vector<int>& P,int weight,int n,vector<int>& dp){
+   
+    if(weight == 0)
+        return dp[weight] = 0;
+    if(dp[weight] != -1)
+        return dp[weight];
+    int max_ = -1e8;
+    for(int i=0;i<W.size();i++){
+        if(weight-W[i]>=0)
+            max_=max(max_,unbounded(W,P,weight-W[i],n,dp)+P[i]);
+    }
+    return dp[weight] = max_;
+}
+int main() {
+    int t;
+    cin>>t;
+    while(t--){
+        int n,w;
+        cin>>n>>w;
+        int temp;
+        vector<int> W;
+        vector<int> P;
+        for(int i=0;i<n;i++){
+            cin>>temp;
+            P.push_back(temp);
+        }
+        for(int i=0;i<n;i++){
+            cin>>temp;
+            W.push_back(temp);
+        }
+        vector<int> dp(w+1,0);
+        // dp[i] = max val
+        
+        for(int j=0;j<n;j++){
+            for(int i=0;i<=w;i++){
+                if(i+W[j] <= w){
+                    dp[i+W[j]]  = max(dp[i+W[j]] , dp[i] + P[j]);
+                }
+            }
+        }
+        cout<<dp[w]<<"\n";
+        
+        
+        
+        
+       // cout<<unbounded(W,P,w,n,dp)<<'\n';
+    }
+	//code
+	return 0;
+}
