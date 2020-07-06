@@ -1,0 +1,28 @@
+class Solution {
+public:
+    bool canPartition_(vector<int>& nums,int n,int sum,vector<vector<bool>>& dp) {
+        if(n == 0 || sum == 0){
+            if(sum == 0)
+                return dp[n][sum] = 1;
+            return dp[n][sum] = 0;
+        }
+        if(dp[n][sum] != true)
+            return dp[n][sum];
+        bool res = false;
+        if(sum - nums[n-1] >= 0)
+            res = res || canPartition_(nums,n-1,sum-nums[n-1],dp);
+        res = res || canPartition_(nums,n-1,sum,dp);
+        return dp[n][sum] = res;
+            
+    }
+    bool canPartition(vector<int>& nums) {
+        int sum = 0;
+        for(int ele:nums)
+            sum+=ele;
+        if(sum%2!=0)
+            return false;
+        sum/=2;
+        vector<vector<bool>> dp(nums.size()+1,vector<bool> (sum+1,-1));
+        return canPartition_(nums,nums.size(),sum,dp);
+    }
+};
