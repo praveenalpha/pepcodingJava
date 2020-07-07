@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int maxEnvelopes(vector<vector<int>>& envelopes) {
+        sort(envelopes.begin(), envelopes.end(), [](vector<int> &a, vector<int> &b) {
+        if (a[0] == b[0])
+            return b[1] < a[1]; // other - this
+        return a[0] < b[0];     // this - other., for cpp replace '-' with '<' default
+    });
+        
+        int max_ = 0;
+        int n = envelopes.size();
+        vector<int> lis(n,1);
+        for(int i=0;i<n;i++){
+            for(int j=i-1;j>=0;j--){
+                if(envelopes[j][0]<envelopes[i][0]&&envelopes[j][1]<envelopes[i][1])
+                    lis[i]=max(lis[i],lis[j]+1);
+            }
+            max_=max(max_,lis[i]);
+        }
+        return max_;
+    }
+};
