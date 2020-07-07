@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+int lbs(vector<int>& nums)
+{
+    vector<int> lis(nums.size(),1);
+    for(int i=0;i<nums.size();i++)
+    {
+        for(int j=i-1;j>=0;j--)
+        {
+            if(nums[j]<nums[i])
+                lis[i]=max(lis[i],lis[j]+1);
+        }
+    }
+    vector<int> lds(nums.size(),1);
+    for(int i=nums.size()-1;i>=0;i--)
+    {
+        for(int j=i+1;j<nums.size();j++)
+        {
+            if(nums[j]<nums[i])
+                lds[i]=max(lds[i],lds[j]+1);
+        }
+    }
+    int max_=0;
+    int ans ;
+    for(int i=0;i<nums.size();i++){
+        //cout<<lis[i]<<" ";
+        ans = lis[i]+lds[i]-1;
+        max_=max(max_,ans);
+    }
+    return max_;
+}
+int main() {
+    int t;
+    cin>>t;
+    while(t--){
+        int n;
+        cin>>n;
+        vector<int> nums(n,0);
+        int temp;
+        for(int i=0;i<n;i++)
+        {
+            cin>>temp;
+            nums[i] = temp;
+        }    
+        cout<< lbs(nums)<<"\n";
+    }
+	//code
+	return 0;
+}
