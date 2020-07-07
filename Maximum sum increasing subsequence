@@ -1,0 +1,35 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    int t;
+    cin>>t;
+    while(t--){
+        int n;
+        cin>>n;
+        int temp;
+        vector<int> nums(n,1);
+        for(int i=0;i<n;i++)
+        {
+            cin>>temp;
+            nums[i] = temp;
+        }
+        int max_= 0;
+        vector<int> lis(n,1);
+        for(int i=0;i<n;i++)
+        {
+            lis[i]=nums[i];
+            for(int j=i-1;j>=0;j--)
+            {
+                if(nums[j]<nums[i])
+                    lis[i] = max(lis[i],lis[j]+nums[i]);
+            }
+            max_=max(max_,lis[i]);
+        }
+        cout<<max_<<'\n';
+    }
+	//code
+	return 0;
+}
