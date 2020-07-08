@@ -1,0 +1,52 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define lli long long int
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    lli t;
+    cin>>t;
+    while(t--){
+        lli gn;
+        cin>>gn;
+        lli cc,mc;
+        lli cs=0;
+        lli ms=0;
+        lli cScore = 0;
+        lli mScore = 0;
+        while(gn--){
+            lli cs=0;
+            lli ms=0;
+            cin>>cc>>mc;
+            while(cc>0){
+                cs+=(cc%10);
+                //cout<<cc%10<<" ";
+                cc/=10;
+                
+            }
+            while(mc>0){
+                ms+=(mc%10);
+                mc/=10;
+            }
+            //cout<<cs<<" "<<ms<<'\n';
+            if(cs > ms)
+                cScore++;
+            else if(ms > cs)
+                mScore++;
+            else{
+                mScore++;
+                cScore++;
+            }
+        }
+        if(mScore > cScore)
+            cout<<"1"<<" "<<mScore<<'\n';
+        else if(mScore < cScore)
+            cout<<"0"<<" "<<cScore<<'\n';
+        else if(mScore == cScore)
+            cout<<"2"<<" "<<mScore<<'\n';
+        
+        
+    }
+    return 0;
+}
