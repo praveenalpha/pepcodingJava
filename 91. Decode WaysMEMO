@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int numDecodings_(string& s,int vidx,vector<int>& dp){
+        if(vidx == s.length())
+            return dp[vidx] = 1;
+        if(dp[vidx] != -1)
+            return dp[vidx];
+        int count = 0;
+        char ch = s[vidx];
+        if(ch == '0')
+            return dp[vidx] = 0;
+        count = numDecodings_(s,vidx+1,dp);
+        if(vidx+1 < s.length()){
+            int num = (ch-'0')*10 + (s[vidx+1]-'0');
+            if(num <= 26)
+                count += numDecodings_(s,vidx+2,dp);
+        }
+        return dp[vidx] = count;
+        
+    }
+    int numDecodings(string s) {
+        vector<int> dp(s.length()+1,-1);
+        return numDecodings_(s,0,dp);
+    }
+};
