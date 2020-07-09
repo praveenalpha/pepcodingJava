@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int numDecodings_(string& s,int vidx){
+        if(vidx == s.length())
+            return 1;
+        char ch = s[vidx];
+        if(ch == '0')
+            return 0;
+        int count = 0;
+        count += numDecodings_(s,vidx+1);
+        if(vidx+1 < s.length()){
+            int num = (ch-'0')*10 + (s[vidx+1] - '0');
+            if( num <= 26){
+                count += numDecodings_(s,vidx+2);
+            }
+        }
+        return count;
+    }
+    int numDecodings(string s) {
+        return numDecodings_(s,0);
+    }
+};
