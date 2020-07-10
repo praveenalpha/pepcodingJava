@@ -1,0 +1,34 @@
+
+#include <bits/stdc++.h>
+using namespace std;
+int aibjck(string& str)
+{
+    int acount = 0;
+    int bcount = 0;
+    int ccount = 0;
+    for (int i = 0; i < str.length(); i++)
+    {
+        if (str[i] == 'a')
+            acount = acount + (1 + acount);
+        else if (str[i] == 'b')
+            bcount = bcount + (acount + bcount);
+        else
+            ccount = ccount + (bcount + ccount);
+    }
+
+    return ccount;
+}
+using namespace std;
+
+int main() {
+    int t;
+    cin>>t;
+    while(t--){
+        string s;
+        cin>>s;
+        cout<<aibjck(s)<<'\n';
+    }
+    
+	//code
+	return 0;
+}
