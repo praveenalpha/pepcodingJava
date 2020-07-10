@@ -1,0 +1,43 @@
+// #include <iostream>
+// #include <vector>
+// #include <algorithm>
+#include<bits/stdc++.h>
+
+using namespace std;
+
+long mcm(vector<int>& nums,int si,int ei,vector<vector<long>>& dp){
+    if(si + 1 == ei)
+        return dp[si][ei] = 0;
+    if(dp[si][ei] != -1)
+        return dp[si][ei];
+    int min_ = INT_MAX;
+    for(int cut = si+1;cut<ei;cut++){
+        int leftAns = mcm(nums,si,cut,dp);
+        int rightAns = mcm(nums,cut,ei,dp);
+        int ans = leftAns + nums[si]*nums[cut]*nums[ei] + rightAns;
+        min_ = min(min_,ans);
+    }
+    return dp[si][ei] = min_;
+}
+int main() {
+    // ios_base::sync_with_stdio(false);
+    // cin.tie(NULL);
+
+	//code
+	int t;
+	cin>>t;
+	while(t--){
+	    int n;
+	    cin>>n;
+	    vector<int> nums(n,0);
+	    int temp;
+	    for(int i=0;i<n;i++){
+	        cin>>temp;
+	        nums[i] = temp;
+	    }
+	    vector<vector<long>> dp(n,vector<long> (n,-1));
+	    int ans = mcm(nums,0,n-1,dp);
+	    cout<< ans<<'\n';
+	}
+	return 0;
+}
