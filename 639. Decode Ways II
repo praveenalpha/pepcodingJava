@@ -1,0 +1,46 @@
+class Solution {
+public:
+    long mod = 1e9 + 7;
+long numDecodingsII_recu(string &str, int idx, vector<long> &dp)
+{
+    if (idx == str.length())
+        return 1;
+    if (dp[idx] != 0)
+        return dp[idx];
+
+    int count = 0;
+    if (str[idx] == '*')
+    {
+        count = (count % mod + 9 * numDecodingsII_recu(str, idx + 1, dp) % mod) % mod;
+        if (idx < str.length() - 1 && str[idx + 1] >= '0' && str[idx + 1] <= '6')
+            count = (count % mod + 2 * numDecodingsII_recu(str, idx + 2, dp) % mod) % mod;
+        else if (idx < str.length() - 1 && str[idx + 1] >= '7')
+            count = (count % mod + numDecodingsII_recu(str, idx + 2, dp) % mod) % mod;
+        else if (idx < str.length() - 1 && str[idx + 1] == '*')
+            count = (count % mod + 15 * numDecodingsII_recu(str, idx + 2, dp) % mod) % mod;
+    }
+    else if (str[idx] > '0')
+    {
+
+        count = (count % mod + numDecodingsII_recu(str, idx + 1, dp) % mod) % mod;
+        if (idx < str.length() - 1)
+        {
+            if (str[idx + 1] != '*')
+            {
+                int num = (str[idx] - '0') * 10 + (str[idx + 1] - '0');
+                if (num <= 26)
+                    count = (count % mod + numDecodingsII_recu(str, idx + 2, dp) % mod) % mod;
+            }
+            else if (str[idx] == '1')
+                count = (count % mod + 9 * numDecodingsII_recu(str, idx + 2, dp) % mod) % mod;
+            else if (str[idx] == '2')
+                count = (count % mod + 6 * numDecodingsII_recu(str, idx + 2, dp) % mod) % mod;
+        }
+    }
+    return dp[idx] = count;
+}
+    int numDecodings(string s) {
+        vector<long> dp(s.length()+1,0);
+        return numDecodingsII_recu(s,0,dp);
+    }
+};
