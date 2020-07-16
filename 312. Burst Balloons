@@ -1,0 +1,32 @@
+class Solution {
+public:
+    
+    int burstBallon(vector<int> &arr, int si, int ei, vector<vector<int>> &dp)
+{
+
+    if (dp[si][ei] != 0)
+        return dp[si][ei];
+
+    int lVal = si == 0 ? 1 : arr[si - 1];
+    int rVal = (ei == arr.size() - 1) ? 1 : arr[ei + 1];
+
+    int ans = 0;
+    for (int cut = si; cut <= ei; cut++)
+    {
+        int leftTreeCost = (cut == si) ? 0 : burstBallon(arr, si, cut - 1, dp);
+        int rightTreeCost = (cut == ei) ? 0 : burstBallon(arr, cut + 1, ei, dp);
+
+        int myCost = leftTreeCost + lVal * arr[cut] * rVal + rightTreeCost;
+        if (myCost > ans)
+            ans = myCost;
+    }
+
+    return dp[si][ei] = ans;
+}
+    int maxCoins(vector<int>& nums) {
+        int n = nums.size();
+        if(n == 0 ) return 0;
+        vector<vector<int>> dp(n , vector<int> (n,0));
+        return burstBallon(nums,0,n-1,dp);
+    }
+};
