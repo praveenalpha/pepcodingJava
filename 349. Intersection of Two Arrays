@@ -1,0 +1,18 @@
+class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        map<int,int> mp;
+        vector<int> ans;
+        for(int ele:nums1){
+            mp[ele]++;
+        }
+        for(int ele:nums2){
+            if(mp[ele]!=0)
+                mp[ele] = -1;
+        }
+        for(pair<int,int> ele:mp)
+            if(ele.second == -1)
+                ans.push_back(ele.first);
+        return ans;
+    }
+};
