@@ -1,0 +1,44 @@
+class Solution {
+public:
+    int trapRainWater(vector<vector<int>>& heightMap) {
+        if(heightMap.size() == 0 || heightMap[0].size() == 0)
+            return 0;
+        int n = heightMap.size();
+        int m = heightMap[0].size();
+        typedef pair<int,int> cell;
+        priority_queue<cell,vector<cell>,greater<cell>> pq;
+        vector<vector<bool>> vis (n,vector<bool> (m,false));
+        for(int i=0;i<n;i++){
+            pq.push({heightMap[i][0],i*m});
+            pq.push({heightMap[i][m-1],i*m+m-1});
+            vis[i][0] = true;
+            vis[i][m-1] = true;
+        }
+        for(int i=0;i<m;i++){
+            pq.push({heightMap[0][i],i});
+            pq.push({heightMap[n-1][i],(n-1)*m+i});
+            vis[0][i]=true;
+            vis[n-1][i] = true;
+        }
+        vector<vector<int>> dir = {{0,1},{0,-1},{-1,0},{1,0}};
+        int totalWater = 0 , maxTillNow = 0;
+        while(pq.size() != 0){
+            cell rvtx = pq.top();
+            pq.pop();
+            
+            int r = rvtx.second/m;
+            int c = rvtx.second%m;
+            maxTillNow = max(maxTillNow,rvtx.first);
+            for(int d = 0 ; d < 4 ; d++){
+                int x = r + dir[d][0];
+                int y = c + dir[d][1];
+                if(x>=0 && y>=0 && x<n && y<m && !vis[x][y]){
+                    totalWater += max(0,maxTillNow-heightMap[x][y]);
+                    vis[x][y] = true;
+                    pq.push({heightMap[x][y],x*m+y});
+                }
+            }
+        }
+        return totalWater;
+    }
+};
