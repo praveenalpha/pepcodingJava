@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <stack>
+using namespace std;
+int n = 7;
+vector<vector<pair<int, int>>> gp(n);
+void addEdge(int u, int v, int w)
+{
+    gp[u].push_back({v, w});
+    gp[v].push_back({u, w});
+}
+void display(vector<vector<pair<int, int>>>& gp){
+    int i=0;
+    for(auto e:gp){
+        cout<<i++<<"->";
+        for(auto p:e)
+            cout<<p.first<<", ";
+        cout<<'\n';
+    }
+}
+bool hasPath(int src,int dest,vector<vector<pair<int, int>>>& gp,vector<bool>& vis)
+{
+    if(src == dest)
+        return true;
+    bool res = false;
+    vis[src] = true;
+    for(pair<int,int> p:gp[src]){
+        if(vis[p.first] == false)
+            res = res || hasPath(p.first,dest,gp,vis);
+    }
+    vis[src] = false;
+    return res;
+}
+void solve()
+{
+    addEdge(0,1,1);
+    addEdge(0,2,1);
+    addEdge(2,3,1);
+    addEdge(3,1,1);
+    addEdge(1,5,1);
+    addEdge(5,4,1);
+    addEdge(4,1,1);
+    //display(gp);
+    vector<bool> vis(n,false);
+    if(hasPath(0,3,gp,vis))
+        cout<<"YES";
+    else cout<<"NO";
+    
+}
+int main()
+{
+
+    solve();
+    return 0;
+}
