@@ -1,0 +1,67 @@
+class Solution {
+  public:
+    // bool isPalindromic(string& s) {
+    //     int j = s.length()-1;
+    //     int i=0;
+    //     while(i<j){
+    //         if(s[i]!=s[j])
+    //             return false;
+    //         else{
+    //             i++;
+    //             j--;
+    //         }
+    //     }
+    //     return true;
+    // }
+    // int  minCut_(string s,int si,int ei,vector<vector<int>>& dp){
+    //     if(isPalindromic(s))
+    //         return dp[si][ei] = 0;
+    //     if(dp[si][ei] != -1)
+    //         return dp[si][ei];
+    //     int count = 0;
+    //     int min_ = INT_MAX;
+    //     for(int cut = si+1;cut<=ei;cut++){
+    //         count = minCut_(s.substr(si - si,cut - si),si,cut-1,dp) + minCut_(s.substr(cut - si,ei - si),cut,ei,dp);
+    //         min_ = min(min_,count);
+    //     }
+    //     return dp[si][ei] = min_+1;
+    // }
+
+    //     int minCut_(string s , int idx, vector<int>&dp){
+    //         if(idx==s.length()) return -1;
+    //         if(dp[idx]!=-1) return dp[idx];
+    //         int ans = INT_MAX;
+    //         string temp = "";
+    //         // aaab + c
+    //         for(int j=idx;j<s.length();j++){
+    //             temp+=s[j];
+    //             if(isPalindromic(temp)){
+    //                 ans = min(ans , 1+minCut_(s,j+1,dp));
+    //             }
+    //         }
+    //          dp[idx] = ans;
+    //         return ans;
+    //     }
+    //     // aab  -> a |  a | b |  ""
+    
+    
+    
+    //   d j  j d   
+    int minCut(string s) {
+      int n = s.length();
+        vector<vector<bool>> dp(n,vector<bool> (n,false));
+        vector<int> ans (n);
+        for(int j=0;j<n;j++){
+            int cut = j;
+            for(int i=0;i<=j;i++){
+                if(s[i] == s[j] && (i+1 > j-1 || dp[i+1][j-1])){
+                    dp[i][j] = true;
+                    cut = min(cut,((i==0)?0:ans[i-1]+1));
+                }
+            
+            ans[j] = cut;
+            }
+        }
+        return ans[n-1];
+    }
+};
