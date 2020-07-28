@@ -1,0 +1,48 @@
+#include<bits/stdc++.h>
+using namespace std;
+void addEdge(vector<vector<long long int>>& gp,long long int u,long long int v){
+    gp[u].push_back(v);
+    gp[v].push_back(u);
+}
+int dfs(vector<vector<long long int>>& gp,int src,vector<bool>& vis){
+    vis[src] = true;
+    int count=0;
+    for(int e : gp[src]){
+        if(!vis[e]){
+            count += dfs(gp,e,vis);
+        }
+    }
+    return count+1;
+}
+int main(){
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int n,p;
+    cin>>n>>p;
+    vector<vector<long long int>> gp(n,vector<long long int> ());
+    while(p--){
+        long long int u,v;
+        cin>>u>>v;
+        addEdge(gp,u,v);
+    }
+    vector<long long int> size;
+    vector<bool> vis(gp.size(),false);
+    for(int i=0;i<n;i++){
+        if(vis[i] == false){
+            size.push_back(dfs(gp,i,vis));
+        }
+    }
+    long long int sum = 0;
+    for(int e:size){
+        sum+=e;
+    }
+    long long int temp = 0;
+    long long int ans = 0;
+    for(int e:size){
+        temp = e;
+        ans += e*(sum - temp);
+        sum -= temp;
+    }
+    cout<<ans<<'\n';
+    return 0;
+}
