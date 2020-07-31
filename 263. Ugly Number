@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int isUgly_(int num,int d){
+        while(num%d==0){
+            num=num/d;
+        }
+        return num;
+    }
+    bool isUgly(int num) {
+        if(num == 0)
+            return 0;
+        num = isUgly_(num,2);
+        num = isUgly_(num,3);
+        num = isUgly_(num,5);
+        return num == 1;
+    }
+};
