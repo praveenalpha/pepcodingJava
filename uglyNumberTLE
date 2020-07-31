@@ -1,0 +1,39 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+int primeNumber(int a,int b){
+    while(a%b==0){
+        a=a/b;
+    }
+    return a;
+    
+}
+bool isUgly(int a){
+     a=primeNumber(a,2);
+     a=primeNumber(a,3);
+     a=primeNumber(a,5);
+    return (a==1)?true:false;
+}
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+	int t;
+	cin>>t;
+	while(t--){
+	    int n; // nth term
+	    cin>>n;
+	    int count = 1;
+	    int i=1;
+	    while(count < n)
+	    {
+	        i++;
+	        if(isUgly(i)){
+	            count++;
+	        }
+	    }
+	    cout<<i<<'\n';
+	}
+	return 0;
+}
