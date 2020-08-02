@@ -1,0 +1,13 @@
+int queenCombination(vector<bool>& rooms,int room,int qpsf,int tnq,string ans)
+{
+    if(tnq == qpsf){
+        cout<<ans<<'\n';
+        return 1;
+    }
+    int count = 0;
+    for(int r = room;r<rooms.size();r++)
+    {
+        count += queenCombination(rooms,r + 1,qpsf+1,tnq,ans+"Q" + to_string(qpsf) + "R" + to_string(r)+" ");
+    }
+    return count ;
+}
