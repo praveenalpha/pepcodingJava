@@ -1,0 +1,19 @@
+int queensPermutation(vector<bool> &rooms, int room, int qpsf, int tnq, string ans) // qpsf: queen place so far.
+{
+    if (qpsf == tnq)
+    {
+        cout << ans << endl;
+        return 1;
+    }
+
+    int count = 0;
+    for (int r = room; r < rooms.size(); r++)
+        if (!rooms[r])
+        {
+            rooms[r] = true;
+            count += queensPermutation(rooms, 0, qpsf + 1, tnq, ans + "Q" + to_string(qpsf) + "R" + to_string(r) + " ");
+            rooms[r] = false;
+        }
+
+    return count;
+}
