@@ -1,0 +1,44 @@
+vector<vector<int>> dirQ = {{0, -1}, {-1, -1}, {-1, 0}, {-1, 1}};
+bool isSafe(vector<vector<bool>> &rooms, int x, int y)
+{
+    // bool res = false;
+
+    for (int d = 0; d < 4; d++)
+    {
+        for (int rad = 1; rad < rooms.size(); rad++)
+
+        {
+            int r = x + rad * dirQ[d][0];
+            int c = y + rad * dirQ[d][1];
+            if (r >= 0 && r < rooms.size() && c >= 0 && c < rooms[0].size())
+            {
+                if (rooms[r][c] == true)
+                    return false;
+            }
+            else
+                break;
+        }
+    }
+    return true;
+}
+int NQueensProblem01(vector<vector<bool>> &rooms, int room, int qpsf, int tnq, string ans)
+{
+    if (qpsf == tnq)
+    {
+        cout << ans << '\n';
+        return 1;
+    }
+    int count = 0;
+    for (int r = room; r < rooms.size() * rooms[0].size(); r++)
+    {
+        int x = r / rooms[0].size();
+        int y = r % rooms[0].size();
+        if (isSafe(rooms, x, y))
+        {
+            rooms[x][y] = true;
+            count += NQueensProblem01(rooms, r + 1, qpsf + 1, tnq, ans + "(" + to_string(x) + "," + to_string(y) + ") ");
+            rooms[x][y] = false;
+        }
+    }
+    return count;
+}
