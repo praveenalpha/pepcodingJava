@@ -1,0 +1,57 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool nodeToRootPath(TreeNode* root,int data,vector<TreeNode*>& ans){
+        if(root == nullptr)
+            return false;
+        if(root->val == data){
+            ans.push_back(root);
+            return true;
+        }
+        bool res=false;
+        bool l=nodeToRootPath(root->left,data,ans);
+        bool r=nodeToRootPath(root->right,data,ans);
+        if(l)
+            ans.push_back(root);
+        if(r)
+            ans.push_back(root);
+        res=l||r;
+        return res;
+    }
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(root == nullptr)
+            return nullptr;
+        vector<TreeNode*> lans;
+        vector<TreeNode*> rans;
+        
+        bool l = nodeToRootPath(root,p->val,lans);
+        bool r = nodeToRootPath(root,q->val,rans);
+        
+        for(TreeNode* t:lans)
+            cout<<t->val<<" ";
+        cout<<'\n';
+        for(TreeNode* t:rans)
+            cout<<t->val<<" ";
+        TreeNode* prev;
+        int i,j;
+        i=lans.size()-1;
+        j=rans.size()-1;
+        while(i>=0 && j>= 0){
+            
+            if(lans[i]==rans[j])
+                prev=lans[i];
+            else
+                break;
+            i--;j--;
+        }
+        return prev;
+    }
+};
