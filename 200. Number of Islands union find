@@ -1,0 +1,46 @@
+class Solution {
+public:
+    int findPair(int u,vector<int>& par){
+        if(par[u] == u)
+            return u;
+        return par[u] = findPair(par[u],par);
+    }
+    int numIslands(vector<vector<char>>& grid) {
+        int count = 0;
+        int n = grid.size();
+        if(n==0)
+            return 0;
+        int m = grid[0].size();
+        if(n == 0 || m == 0)
+            return 0;
+        vector<int> par(n*m);
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                int x = (i*m) + j;
+                par[x] = x;
+                if(grid[i][j] == '1')
+                    count++;
+            }
+        }
+        vector<vector<int>> dir = {{1,0},{0,1}};
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j] == '1'){
+                    for(int d=0;d<2;d++){
+                        int x= i+dir[d][0];
+                        int y = j+dir[d][1];
+                        if(x<n && y<m && grid[x][y] == '1'){
+                            int p1 = findPair(i*m+j,par);
+                            int p2 = findPair(x*m+y,par);
+                            if(p1!=p2){
+                                count--;
+                                par[p1] = p2;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return count;
+    }
+};
