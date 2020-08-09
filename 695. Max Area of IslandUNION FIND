@@ -1,0 +1,56 @@
+class Solution {
+public:
+    int findPar(int u,vector<int>& par){
+        if(par[u] == u)
+            return u;
+        return par[u] = findPar(par[u],par);
+    }
+    int maxAreaOfIsland(vector<vector<int>>& grid) {
+        int n = grid.size();
+        if(n==0)
+            return 0;
+        int m= grid[0].size();
+        if(m==0)
+            return 0;
+        int count=0;
+        vector<int> size(n*m,1);
+        vector<int> par(n*m);
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                int x = i*m + j;
+                par[x] = x;
+                if(grid[i][j] == 1)
+                    count++;
+            }
+        }
+        if(count == 0)
+            return 0;
+        int max_ = INT_MIN;
+        vector<vector<int>> dir = {{1,0},{0,1}};
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j] == 1){
+                    for(int d=0;d<2;d++){
+                        int x = i + dir[d][0];
+                        int y = j + dir[d][1];
+                        
+                        if(x<n && y<m && grid[x][y] == 1){
+                            int p1 = findPar(x*m + y,par);
+                            int p2 = findPar(i*m + j,par);
+                            if(p1 != p2){
+                                count--;
+                                par[p2] = p1;
+                                size[p1]+=size[p2];
+                                // max_ = max(max_,size[p2]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        for(int i=0;i<n*m;i++)
+            if(size[i] > max_)
+                max_ = size[i];
+        return max_;
+    }
+};
