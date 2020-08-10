@@ -1,0 +1,37 @@
+#include <bits/stdc++.h>
+using namespace std;
+int findPar(int u,vector<int>& par){
+    if(par[u]==u)
+        return u;
+    return par[u] = findPar(par[u],par);
+}
+void lexicographycallySmallestEquivalentString(string& a,string& b , string& s){
+    vector<int> par(26);
+    for(int i=0;i<26;i++)
+        par[i] = i;
+    for(int i=0;i<a.length();i++){
+        int p1 = findPar(a[i] - 'a',par);
+        int p2 = findPar(b[i] - 'a',par);
+        if(p1 < p2){
+            par[p2] = p1;
+        }
+        else{
+            par[p1] = p2;
+        }
+    }
+    string ans="";
+       for(int i=0;i<a.length();i++){
+          ans += (char)(findPar(s[i]-'a',par) + 'a');
+       }
+
+       cout<< ans;
+}
+int main() {
+    string a = "parker";
+    string b = "morris";
+    string s = "parser";
+    
+    lexicographycallySmallestEquivalentString(a,b,s);
+	// your code goes here
+	return 0;
+}
