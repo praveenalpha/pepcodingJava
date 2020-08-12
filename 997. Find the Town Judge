@@ -1,0 +1,44 @@
+class Solution {
+public:
+    
+    int findJudge(int N, vector<vector<int>>& trust) {
+        if(trust.size() == 0  && N == 1)
+            return 1;
+        if(trust.size() == 0){
+            cout<<"a";
+            return -1;
+        }
+         if(trust[0].size() == 0)
+            return -1;
+        vector<vector<int>> par(N+1,vector<int> (1,-1));
+        for(vector<int> e:trust){
+            int u = e[0];
+            int v = e[1];
+            par[u].push_back(v);
+        }
+        int a=-2;
+        for(int i = 1;i<=N;i++){
+            if(par[i].size() == 1)
+                a = i;
+        }
+        if(a == -2)
+            return -1;
+        bool flag = false;
+        for(int i = 1; i <= N ;i++){
+            if(i == a)
+                continue;
+            if(flag){
+                return -1;
+            }
+            for(int e : par[i]){
+                if(e == a){
+                    flag = false;
+                    break;
+                }
+                else
+                    flag = true;
+            }
+        }
+        return a;
+    }
+};
