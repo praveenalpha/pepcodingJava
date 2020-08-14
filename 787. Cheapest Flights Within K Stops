@@ -1,0 +1,36 @@
+struct cmp{
+    bool operator()(vector<int>& x , vector<int>& y){
+        return x[1] > y[1]; 
+    }
+};
+
+
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int K) {
+        vector<vector<pair<int,int>>> gp (n,vector<pair<int,int>> ());
+        for(vector<int> e:flights){
+            gp[e[0]].push_back({e[1],e[2]});
+        }
+        priority_queue<vector<int> , vector<vector<int>> , cmp> pq;
+        pq.push({src,0,-1});
+        vector<bool> vis(n,false);
+        while(pq.size() != 0){
+            vector<int> rvtx = pq.top();
+            pq.pop();
+            if(rvtx[2]>K)
+                continue;
+            cout<<rvtx[0]<<"\n";
+           
+            if(rvtx[0] == dst)
+                return rvtx[1];
+            for(pair<int,int> e:gp[rvtx[0]]){
+               
+                        pq.push({e.first,e.second+rvtx[1],rvtx[2]+1});
+                    
+                
+            }
+        }
+        return -1;
+    }
+};
