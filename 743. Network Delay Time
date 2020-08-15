@@ -1,0 +1,36 @@
+struct cmp{
+    bool operator()(vector<int>&a,vector<int>&b){
+        return a[1] > b[1];
+    }
+};
+class Solution {
+public:
+    int networkDelayTime(vector<vector<int>>& times, int N, int K) {
+        vector<vector<pair<int,int>>> gp(N+1,vector<pair<int,int>> ());
+        for(vector<int> e:times){
+            gp[e[0]].push_back({e[1],e[2]});
+        }
+        vector<int> wsf(N+1,-1);
+        priority_queue<vector<int> , vector<vector<int>> , cmp> pq;
+        pq.push({K,0});
+        vector<bool> vis(N+1,false);
+        while(pq.size() != 0){
+            vector<int> rvtx = pq.top();
+            pq.pop();
+            if(vis[rvtx[0]])
+                continue;
+            vis[rvtx[0]] = true;
+            wsf[rvtx[0]] = rvtx[1];
+            for(pair<int,int> e:gp[rvtx[0]]){
+                pq.push({e.first,e.second+rvtx[1]});
+            }
+        }
+        int max_ = INT_MIN;
+        for(int i=1;i<N+1;i++){
+            if(!vis[i])
+                return -1;
+            max_ = max(max_,wsf[i]);
+        }
+        return max_;
+    }
+};
