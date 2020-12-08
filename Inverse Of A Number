@@ -1,0 +1,30 @@
+import java.util.*;
+
+public class Main{
+
+public static void main(String[] args) {
+  // write your code here  
+  Scanner scn = new Scanner(System.in);
+  int n = scn.nextInt();
+  int tempN = n;
+  int size = 0;
+  while(tempN > 0){
+      ++size;
+      tempN/=10;
+  }
+  int ans = 0,count=1,tempCount=1;
+  while(n > 0){
+      int lastDigit = n %10;
+      
+      while(lastDigit-1 > 0){
+          --lastDigit;
+          count*=10;
+      }
+      ans = ans + count;
+      ++tempCount;
+      count = tempCount;
+      n/=10;
+  }
+  System.out.println(ans);
+ }
+}
