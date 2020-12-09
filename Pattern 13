@@ -1,0 +1,33 @@
+import java.util.*;
+public class Main{
+    public static void main(String[] args){
+        Scanner scn = new Scanner(System.in);
+        int num = scn.nextInt();
+        int a = 1,b=0;
+        for(int i=0;i<num;i++){
+            for(int j=0;j<=i;j++){
+                if(j == 0)
+                    System.out.print(1+"\t");
+                else{
+                    int n = i , r = j,nmr=n-r , N = 1 , R = 1, NMR = 1;
+                    while(n > 1){
+                        N *= n;
+                        --n;
+                    }
+                    while(r > 1){
+                        R *= r;
+                        --r;
+                    }
+                    while(nmr > 1){
+                        NMR *= nmr;
+                        --nmr;
+                    }
+                    System.out.print(N/(R*NMR) + "\t");
+                }
+            }
+            System.out.println();
+        }
+        //write your code here
+
+    }
+}
