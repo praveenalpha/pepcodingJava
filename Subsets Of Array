@@ -1,0 +1,45 @@
+import java.io.*;
+import java.util.*;
+
+public class Main{
+
+public static void main(String[] args) throws Exception {
+    // write your code here
+    Scanner scn = new Scanner(System.in);
+    int n = scn.nextInt();
+    int [] arr = new int[n];
+    for(int i=0;i<n;i++)
+    arr[i] = scn.nextInt();
+    
+    
+    boolean [] state = new boolean[n];
+    for(int i=0;i<n;i++){
+        state[i] = false;
+    }
+    
+    int number = 0;
+    while(number < Math.pow(2,n)){
+        for(int i=0;i<n;i++){
+            if(state[i] == true){
+                System.out.print(arr[i] + "\t");
+            }
+            else{
+                System.out.print("-\t");
+            }
+        }
+        ++number;
+        
+        
+        state[n-1] = !state[n-1];
+        for(int i=n-2;i>=0;i--){
+            int trp = (int)Math.pow(2,n-1-i);
+            
+            if(number % trp == 0){
+                state[i] = !state[i];        
+            }
+        }
+        System.out.println();
+    }
+ }
+
+}
