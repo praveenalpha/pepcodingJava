@@ -1,0 +1,132 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void kRotate(int[] ext,int k){
+        k %= ext.length;
+        if(k < 0)
+            k = ext.length + k;
+        
+        int [] temp = new int[k];
+        int p=0;
+        for(int i=0;i<k;i++)
+            temp[p++] = ext[i];
+        
+        for(int i=k;i<ext.length;i++){
+            ext[i-k] = ext[i];
+        }
+        
+        for(int i=0;i<temp.length;i++){
+            ext[i+ext.length-k] = temp[i];
+        }
+        // for(int i=0;i<ext.length;i++)
+        //     System.out.print(ext[i]+" ");
+    }
+    public static int[] extract(int minRow,int maxRow,int minCol,int maxCol,int[][] arr){
+        int size = (((maxRow - minRow+1) + (maxCol - minCol+1) ) * 2) - 4;
+        // System.out.print(size);
+        int [] ans = new int[size];
+        int p = 0;
+        for(int i=minCol;i<=maxCol;i++){
+            ans[p++] = arr[minRow][i];
+            // System.out.print(arr[minRow][i]+" ");
+            // System.out.print(ans[p-1]+" ");
+        }
+        minRow++;
+        for(int i=minRow;i<=maxRow;i++){
+            ans[p++] = arr[i][maxCol];
+            // System.out.print(arr[i][maxCol]+" ");
+            // System.out.print(ans[p-1]+" ");
+        }
+        maxCol--;
+        for(int i=maxCol;i>=minCol;i--){
+            ans[p++] = arr[maxRow][i];
+            // System.out.print(arr[maxRow][i]+" ");
+            // System.out.print(ans[p-1]+" ");
+            
+        }
+        maxRow--;
+        for(int i=maxRow;i>=minRow;i--){
+            ans[p++] = arr[i][minCol];
+            // System.out.print(arr[minRow][i]+" ");
+            // System.out.print(ans[p-1]+" ");
+        }
+        // System.out.print(ans[p-1]);
+        return ans;
+        
+        
+    }
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int m = scn.nextInt();
+        int [][] arr = new int[n][m];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                arr[i][j] = scn.nextInt();
+            }
+        }
+        
+        int s = scn.nextInt();
+        int r = scn.nextInt();
+        
+        
+        int minRow = s-1, maxRow = n-1-s+1, minCol = s-1, maxCol = m-1-s+1;
+        // System.out.print(minRow+" "+maxRow+" "+minCol+" "+maxCol+" ");
+        int [] ext = extract(minRow,maxRow,minCol,maxCol,arr);
+        // for(int i=0;i<ext.length;i++)
+        //     System.out.print(ext[i]+" ");
+        
+        
+        kRotate(ext,r);
+        
+        
+        int p = 0;
+        for(int i=minCol;i<=maxCol;i++){
+            arr[minRow][i]=ext[p++];
+            // System.out.print(arr[minRow][i]+" ");
+            // System.out.print(ans[p-1]+" ");
+        }
+        minRow++;
+        
+        
+        for(int i=minRow;i<=maxRow;i++){
+            arr[i][maxCol]=ext[p++];
+            // System.out.print(arr[i][maxCol]+" ");
+            // System.out.print(ans[p-1]+" ");
+        }
+        maxCol--;
+        
+        
+        
+        
+        
+        for(int i=maxCol;i>=minCol;i--){
+            arr[maxRow][i]=ext[p++];
+            // System.out.print(arr[maxRow][i]+" ");
+            // System.out.print(ans[p-1]+" ");
+            
+        }
+        maxRow--;
+        for(int i=maxRow;i>=minRow;i--){
+            arr[i][minCol] = ext[p++];
+            // System.out.print(arr[minRow][i]+" ");
+            // System.out.print(ans[p-1]+" ");
+        }
+        display(arr);
+    }
+    public static void display(int[][] arr){
+        for(int i = 0; i < arr.length; i++){
+            for(int j = 0; j < arr[0].length; j++){
+                System.out.print(arr[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+}
+// 11 12 13 14 15 16 17
+// 21 25 26 36 46 45 27
+// 31 24 33 34 35 44 37
+// 41 23 22 32 42 43 47
+// 51 52 53 54 55 56 57
