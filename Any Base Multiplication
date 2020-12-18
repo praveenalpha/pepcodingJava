@@ -1,0 +1,42 @@
+import java.util.*;
+
+public class Main{
+
+public static void main(String[] args) {
+    Scanner scn = new Scanner(System.in);
+    int b = scn.nextInt();
+    int n1 = scn.nextInt();
+    int n2 = scn.nextInt();
+
+    int d = getProduct(b, n1, n2);
+    System.out.println(d);
+ }
+ public static int decimalToAnyBase(int n,int b){
+     int ans=0,pow=1;
+     while(n>0){
+         int rem = n%b;
+         ans += (rem*pow);
+         pow *= 10;
+         n/=b;
+     }
+     return ans;
+ }
+ public static int anyBaseToDecimal(int n,int b){
+     int ans = 0,pow = 1;
+     while(n>0){
+         int lastDigit = n%10;
+         ans += lastDigit*pow;
+         pow *= b;
+         n/=10;
+     }
+     return ans;
+ }
+ public static int getProduct(int b, int n1, int n2){
+    n1 = anyBaseToDecimal(n1,b);
+    // System.out.println(n1);
+    n2 = anyBaseToDecimal(n2,b);
+    int ans = n1*n2;
+    ans = decimalToAnyBase(ans,b);
+    return ans;
+ }
+}
