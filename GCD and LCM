@@ -1,0 +1,38 @@
+import java.util.*;
+    
+    public class Main{
+    public static int gcd(int a,int b){
+        int devisor = a;
+        int dividend = b;
+        int rem = dividend % devisor;
+        while(rem > 0){
+            dividend = devisor;
+            devisor = rem;
+            rem = dividend % devisor;
+        }
+        return devisor;
+    }
+    public static int lcm(int a,int b){
+        int GCD = gcd(a,b);
+        int LCM = (a*b)/GCD;
+        return LCM;
+    }
+    public static void main(String[] args) {
+      // write your code here  
+      Scanner scn = new Scanner(System.in);
+      int a = scn.nextInt();
+      int b = scn.nextInt();
+      if(a>=b){
+          int GCD = gcd(a,b);
+          int LCM = lcm(a,b);
+          System.out.println(GCD);
+          System.out.println(LCM);
+      }
+      else{
+          int GCD = gcd(b,a);
+          int LCM = lcm(b,a);
+          System.out.println(GCD);
+          System.out.println(LCM);
+      }
+     }
+    }
