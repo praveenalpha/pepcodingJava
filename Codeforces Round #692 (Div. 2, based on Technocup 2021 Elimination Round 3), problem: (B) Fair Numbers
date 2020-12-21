@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <stack>
+#include <unordered_map>
+#include <set>
+using namespace std;
+#define lli long long int
+long long int gcd(long long int a, long long int b)
+{
+  if (b == 0)
+    return a;
+  return gcd(b, a % b);
+}
+ 
+// Function to return LCM of two numbers 
+long long int lcm(long long int a,long long  int b)
+{
+    return (a / gcd(a, b)) * b;
+}
+int main()
+{
+    // ios_base::sync_with_stdio(false);
+    // cin.tie(NULL);
+    
+    int t ;
+    cin>>t;
+    while(t--){
+        long long int n;
+        cin>>n;
+        // cout<<n;
+        if((long long int)n <= (long long int)10){
+            cout<<n<<endl;
+            continue;
+        }
+        long long int x,m=1000000000000000000;
+        for(long long int i=n;i<=m;i++){
+            // cout<<"a"<<endl;
+            long long int temp = i;
+            vector<bool> numbers(9,false);
+            
+            while((long long int)temp > (long long int)0){
+                long long int lastDigit = (long long int)temp%(long long int)10;
+                if(lastDigit != 0){
+                    numbers[lastDigit-1] = true;
+                }
+                temp = (long long int)temp / (long long int)10;
+            }
+            
+            long long int a=1,b;
+            for(int i=1;i<9;i++){
+                
+                if(numbers[i]){
+                    b = i + 1;
+                    a = lcm(a,b);
+                }
+            }
+            
+            if((long long int)i%(long long int)a == (long long int)0){
+                x = i;
+                break;
+            }
+        }
+        cout<<x<<endl;
+    }
+    
+    return 0;
+}
