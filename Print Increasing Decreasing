@@ -1,0 +1,36 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        pdi(n);
+    }
+
+    public static void pdi(int n) {
+        pd(n);
+        pi(1,n);
+    }
+    
+    public static void pd(int n){
+        if(n == 1){
+            System.out.println(n);
+            return;
+        }
+        System.out.println(n);
+        pd(n-1);
+        return;
+    }
+    
+    public static void pi(int i,int n){
+        if(i == n){
+            System.out.println(i);
+            return;
+        }
+        System.out.println(i);
+        pi(i+1,n);
+        return;
+    }
+}
