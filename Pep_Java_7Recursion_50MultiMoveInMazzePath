@@ -1,0 +1,92 @@
+import java.io.*;
+import java.util.*;
+
+public class Solution {
+    public static void main(String[] args) {
+        Scanner scn = new Scanner(System.in);
+        int n1 = scn.nextInt();
+        int n2 = scn.nextInt();
+        numberOfPaths(0,0,n1-1,n2-1);
+        System.out.println(c);
+        ArrayList<String> ans = paths(0,0,n1-1,n2-1,"");
+        System.out.println(ans);
+        printPaths(0,0,n1-1,n2-1,"");
+    }
+    static int c=0;
+    public static void numberOfPaths(int sr, int sc,int er,int ec) {
+        if(sr == er && sc == ec){
+            c++;
+            return;
+        }
+        int ans = 0;
+        for(int i=1;i<=er;i++){
+            if(sr+i <= er){
+                numberOfPaths(sr+i,sc,er,ec);
+            }
+        }
+        for(int i=1;i<=ec;i++){
+            if(sc+i <= ec){
+                numberOfPaths(sr,sc+i,er,ec);
+            }
+        }
+        for(int i=1;i<=Math.min(er,ec);i++){
+            if(sc+i <= ec && sr+i <= er){
+                numberOfPaths(sr+i,sc+i,er,ec);
+            }
+        }
+        return;
+    }
+    
+    public static ArrayList < String > paths(int sr, int sc,int er,int ec,String str) {
+        if(sr == er && sc == ec){
+            ArrayList<String> res = new ArrayList<String>(0);
+            res.add(str);
+            return res;
+        }
+        ArrayList<String> ans = new ArrayList<String>(0);
+        for(int i=1;i<=er;i++){
+            if(sr+i <= er){
+                ArrayList<String> sans = paths(sr+i,sc,er,ec,str+"H"+i);
+                for(int j=0;j<sans.size();j++)
+                      ans.add(sans.get(j));
+            }
+        }
+        for(int i=1;i<=ec;i++){
+            if(sc+i <= ec){
+                ArrayList<String> sans = paths(sr,sc+i,er,ec,str+"V"+i);
+                for(int j=0;j<sans.size();j++)
+                      ans.add(sans.get(j));
+            }
+        }
+            for(int i=1;i<=Math.min(er,ec);i++){
+                if(sc+i <= ec && sr+i <= er){
+                    ArrayList<String> sans = paths(sr+i,sc+i,er,ec,str+"D"+i);
+                    for(int j=0;j<sans.size();j++)
+                         ans.add(sans.get(j));
+                }
+            }
+        return ans;
+    }
+    
+    public static void printPaths(int sr, int sc,int er,int ec,String str) {
+        if(sr == er && sc == ec){
+            System.out.println(str);
+            return;
+        }
+        for(int i=1;i<=er;i++){
+            if(sr+i <= er){
+                printPaths(sr+i,sc,er,ec,str+"H"+i);
+            }
+        }
+        for(int i=1;i<=ec;i++){
+            if(sc+i <= ec){
+                printPaths(sr,sc+i,er,ec,str+"V"+i);
+            }
+        }
+        for(int i=1;i<=Math.min(er,ec);i++){
+            if(sc+i <= ec && sr+i <= er){
+                printPaths(sr+i,sc+i,er,ec,str+"D"+i);
+            }
+        }
+    }
+}
