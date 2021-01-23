@@ -1,0 +1,38 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String str = br.readLine();
+        String ans = "";
+        Stack<Integer> st = new Stack<> ();
+        int count = 1;
+        for(int i=0;i<str.length();i++){
+            if(str.charAt(i) == 'd'){
+                st.push(count);
+                count++;
+            }
+            else{
+                st.push(count);
+                count++;
+                while(st.size() != 0){
+                    int ele = st.peek();
+                    st.pop();
+                    ans += ele;
+                }
+                
+            }
+        }
+        st.push(count);
+        while(st.size() != 0){
+            int ele = st.peek();
+            st.pop();
+            ans += ele;
+        }
+        System.out.println(ans);
+        // code
+    }
+}
