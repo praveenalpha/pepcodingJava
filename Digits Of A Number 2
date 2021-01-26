@@ -1,0 +1,27 @@
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+        // write your code here  
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int temp = n;
+        int count = 0;
+        while (n > 0) {
+            count++;
+            n /= 10;
+        }
+        while(count > 0){
+            count--;
+            int pow = (int)(Math.pow(10,count));
+            int x = temp / pow;
+            System.out.println(x % 10);
+        }
+        //1234
+        //1234 / 1000 = 1 % 10 = 1
+        //1234 / 100 = 12 % 10 = 2
+        //1234 / 10 = 123 % 10 = 3
+        //1234 / 1 = 1234 % 10 = 4
+    }
+}
