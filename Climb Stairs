@@ -1,0 +1,24 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    
+    public static void main(String[] args) throws Exception {
+        // write your code here
+        Scanner scn = new Scanner(System.in);
+        int m = scn.nextInt();
+        int [] dp = new int[m];
+        if(m == 0){
+            System.out.println(1);
+            return;
+        }
+        dp[0] = 1;
+        dp[1] = 2;
+        dp[2] = 4;
+        for(int i=3;i<m;i++){
+            dp[i] = (dp[i-1]+ dp[i-2] + dp[i-3]) ;
+        }
+        System.out.println(dp[m-1]);
+    }
+
+}
